@@ -90,7 +90,7 @@ export default function Admin() {
     <main className="mx-auto max-w-6xl px-4 py-10 space-y-8 bg-[#E7F0F7]">
       <header className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight text-[#0A66C2]">Admin Dashboard</h1>
-        <p className="text-sm text-[#0A66C2]/70">Owner-only controls. Frontend-only demo; will connect to API later.</p>
+        <p className="text-sm text-[#0A66C2]/70">Owner-only controls. Admin actions now use backend API endpoints.</p>
       </header>
 
       {error && (

@@ -14,8 +14,14 @@ import { updateUserPreferences } from "@/services/preferences";
 import Button from "@/components/Button";
 
 export default function Profile() {
-  const { prefs } = usePreferences();
-  const user = { name: prefs.name || "User", email: prefs.email || "user@example.com" };
+  const { prefs, setPrefs } = usePreferences();
+  const user = {
+    name: prefs.name || "User",
+    email: prefs.email || "user@example.com",
+    phone: prefs.phone || "Not added",
+    bio: prefs.bio || "No business info yet.",
+    website: prefs.website || "No website added",
+  };
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
@@ -53,7 +59,8 @@ export default function Profile() {
   const handleProfileSave = async (data: Record<string, string>) => {
     setIsSavingProfile(true);
     try {
-      await updateUserPreferences(data);
+      const updated = await updateUserPreferences(data);
+      setPrefs(updated);
       setIsEditingProfile(false);
     } finally {
       setIsSavingProfile(false);
@@ -85,6 +92,40 @@ export default function Profile() {
           )}
         </div>
       </header>
+
+      <section className="grid gap-6 rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm md:grid-cols-[1.2fr_1fr]">
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Profile overview</h2>
+          <p className="text-sm text-slate-600">
+            Your personal and business details are shown here. Update them anytime and they will refresh on this page.
+          </p>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl bg-slate-50 p-4 border border-slate-200">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Name</p>
+              <p className="mt-2 text-base font-medium text-slate-900">{user.name}</p>
+            </div>
+            <div className="rounded-2xl bg-slate-50 p-4 border border-slate-200">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Email</p>
+              <p className="mt-2 text-base font-medium text-slate-900">{user.email}</p>
+            </div>
+            <div className="rounded-2xl bg-slate-50 p-4 border border-slate-200">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Phone</p>
+              <p className="mt-2 text-base font-medium text-slate-900">{user.phone}</p>
+            </div>
+            <div className="rounded-2xl bg-slate-50 p-4 border border-slate-200">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Website</p>
+              <p className="mt-2 text-base font-medium text-slate-900">{user.website}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-3xl bg-[#E7F0F7] p-6">
+          <p className="text-xs uppercase tracking-[0.24em] text-[#0A66C2]">Business info</p>
+          <h3 className="mt-3 text-lg font-semibold text-slate-900">About your business</h3>
+          <p className="mt-4 text-sm leading-7 text-slate-700">{user.bio}</p>
+        </div>
+      </section>
 
       {/* Profile Edit Form */}
       {isEditingProfile && (

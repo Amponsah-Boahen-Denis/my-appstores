@@ -1,4 +1,4 @@
-import { StoreSubmission } from "@/services/userStores";
+﻿import { StoreSubmission } from "@/services/userStores";
 
 export type StoreStatus = "pending" | "approved" | "rejected";
 
@@ -9,75 +9,59 @@ export type ModeratedStore = StoreSubmission & {
   rejectionReason?: string;
 };
 
-const STORAGE_KEY = "admin:moderated-stores";
-import { safeGet, safeParse, safeWriteJSON } from "@/services/storage";
-
-function readAll(): ModeratedStore[] {
-  if (typeof window === "undefined") return [];
-  const raw = safeGet(STORAGE_KEY);
-  return safeParse<ModeratedStore[]>(raw, []);
-}
-
-function writeAll(stores: ModeratedStore[]) {
-  if (typeof window === "undefined") return;
-  safeWriteJSON(STORAGE_KEY, stores);
-}
-
 export async function getPendingStores(): Promise<ModeratedStore[]> {
-  const stores = readAll();
-  return stores.filter(s => s.status === "pending");
+  const res = await fetch("/api/admin/moderation?status=pending");
+  if (!res.ok) {
+    throw new Error(`Failed to load pending moderation items: ${res.status}`);
+  }
+  return (await res.json()) as ModeratedStore[];
 }
 
 export async function getAllModeratedStores(): Promise<ModeratedStore[]> {
-  return readAll();
+  const res = await fetch("/api/admin/moderation");
+  if (!res.ok) {
+    throw new Error(`Failed to load moderation items: ${res.status}`);
+  }
+  return (await res.json()) as ModeratedStore[];
 }
 
 export async function approveStore(storeId: string, adminId: string): Promise<void> {
-  const stores = readAll();
-  const idx = stores.findIndex(s => s.id === storeId);
-  if (idx === -1) return;
-
-  stores[idx] = {
-    ...stores[idx],
-    status: "approved",
-    moderatedBy: adminId,
-    moderatedAt: Date.now(),
-    rejectionReason: undefined,
-  };
-  writeAll(stores);
+  const res = await fetch("/api/admin/moderation", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: storeId, action: "approve", adminId }),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to approve store: ${res.status}`);
+  }
 }
 
 export async function rejectStore(storeId: string, adminId: string, reason: string): Promise<void> {
-  const stores = readAll();
-  const idx = stores.findIndex(s => s.id === storeId);
-  if (idx === -1) return;
-
-  stores[idx] = {
-    ...stores[idx],
-    status: "rejected",
-    moderatedBy: adminId,
-    moderatedAt: Date.now(),
-    rejectionReason: reason,
-  };
-  writeAll(stores);
+  const res = await fetch("/api/admin/moderation", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: storeId, action: "reject", adminId, reason }),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to reject store: ${res.status}`);
+  }
 }
 
 export async function submitStoreForModeration(store: StoreSubmission): Promise<void> {
-  const stores = readAll();
-  const moderated: ModeratedStore = {
-    ...store,
-    status: "pending",
-  };
-  stores.push(moderated);
-  writeAll(stores);
+  const res = await fetch("/api/admin/moderation", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...store, status: "pending" }),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to submit store for moderation: ${res.status}`);
+  }
 }
 
-export function getModerationStats(): { pending: number; approved: number; rejected: number; total: number } {
-  const stores = readAll();
-  return {
-    pending: stores.filter(s => s.status === "pending").length,
-    approved: stores.filter(s => s.status === "approved").length,
-    rejected: stores.filter(s => s.status === "rejected").length,
-    total: stores.length,
-  };
+export async function getModerationStats(): Promise<{ pending: number; approved: number; rejected: number; total: number }> {
+  const res = await fetch("/api/admin/moderation/stats");
+  if (!res.ok) {
+    throw new Error(`Failed to load moderation stats: ${res.status}`);
+  }
+  return (await res.json()) as { pending: number; approved: number; rejected: number; total: number };
 }

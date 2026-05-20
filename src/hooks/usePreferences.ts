@@ -5,13 +5,13 @@ import type { UserPreferences } from "@/services/preferences";
 import { getUserPreferences, updateUserPreferences } from "@/services/preferences";
 
 export function usePreferences() {
-  const [prefs, setPrefs] = useState<UserPreferences>({ layout: "grid" });
+  const [prefs, setPrefsState] = useState<UserPreferences>({ layout: "grid" });
 
   useEffect(() => {
     let mounted = true;
     getUserPreferences()
       .then((p) => {
-        if (mounted) setPrefs(p);
+        if (mounted) setPrefsState(p);
       })
       .catch(() => {});
     return () => {
@@ -21,7 +21,7 @@ export function usePreferences() {
 
   const setLayout = async (layout: "grid" | "list") => {
     const next: UserPreferences = { ...prefs, layout };
-    setPrefs(next);
+    setPrefsState(next);
     try {
       await updateUserPreferences({ layout });
     } catch {
@@ -29,5 +29,5 @@ export function usePreferences() {
     }
   };
 
-  return { prefs, setLayout } as const;
+  return { prefs, setLayout, setPrefs: setPrefsState } as const;
 }
