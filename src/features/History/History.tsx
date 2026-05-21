@@ -72,7 +72,7 @@ function SearchHistoryCard({ item, onClick }: { item: SearchHistoryItem; onClick
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 

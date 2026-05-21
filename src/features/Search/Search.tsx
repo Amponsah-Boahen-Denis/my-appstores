@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import SearchForm from "@/components/SearchForm";
 import LayoutToggle from "@/components/LayoutToggle";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -32,7 +32,6 @@ export default function Search() {
   const { prefs, setLayout } = usePreferences();
   const prefsLayout = prefs.layout;
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [state, setState] = useState<SearchState>({ product: "", country: "", location: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [autoSearchExecuted, setAutoSearchExecuted] = useState(false);
@@ -64,40 +63,7 @@ export default function Search() {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    const product = searchParams?.get("product") || "";
-    const country = searchParams?.get("country") || "";
-    const location = searchParams?.get("location") || "";
-
-    if (product && !autoSearchExecuted) {
-      setAutoSearchExecuted(true);
-      handleSubmit({ product, country, location, categories: [] }, { recordHistory: false });
-    }
-  }, [searchParams, autoSearchExecuted]);
-
-  const handleLayoutChange = async (layout: "grid" | "list") => {
-    await setLayout(layout);
-  };
-
-  const handleFiltersChange = (newFilters: FilterOptions) => {
-    setFilters(newFilters);
-    const filtered = applyFilters(results, newFilters);
-    setFilteredResults(filtered);
-  };
-
-  const handleClearFilters = () => {
-    const defaultFilters: FilterOptions = {
-      hasWebsite: null,
-      hasEmail: null,
-      hasPhone: null,
-      sortBy: "relevance",
-      maxResults: 20,
-    };
-    setFilters(defaultFilters);
-    setFilteredResults(results);
-  };
-
-  const handleSubmit = async (
+  const handleSubmit = useCallback(async (
     data: { product: string; country: string; location: string; categories: string[] },
     options?: { recordHistory?: boolean }
   ) => {
@@ -225,6 +191,39 @@ export default function Search() {
     } finally {
       setIsLoading(false);
     }
+  }, [filters]);
+
+  useEffect(() => {
+    const product = searchParams?.get("product") || "";
+    const country = searchParams?.get("country") || "";
+    const location = searchParams?.get("location") || "";
+
+    if (product && !autoSearchExecuted) {
+      setAutoSearchExecuted(true);
+      handleSubmit({ product, country, location, categories: [] }, { recordHistory: false });
+    }
+  }, [searchParams, autoSearchExecuted, handleSubmit]);
+
+  const handleLayoutChange = async (layout: "grid" | "list") => {
+    await setLayout(layout);
+  };
+
+  const handleFiltersChange = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+    const filtered = applyFilters(results, newFilters);
+    setFilteredResults(filtered);
+  };
+
+  const handleClearFilters = () => {
+    const defaultFilters: FilterOptions = {
+      hasWebsite: null,
+      hasEmail: null,
+      hasPhone: null,
+      sortBy: "relevance",
+      maxResults: 20,
+    };
+    setFilters(defaultFilters);
+    setFilteredResults(results);
   };
 
   return (

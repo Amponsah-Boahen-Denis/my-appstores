@@ -46,11 +46,11 @@ export async function PUT(req: NextRequest) {
       { returnDocument: "after" }
     );
 
-    if (!result.value) {
+    if (!result) {
       return NextResponse.json({ error: "Moderation item not found" }, { status: 404 });
     }
 
-    return NextResponse.json(result.value);
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Admin moderation update error:", error);
     return NextResponse.json({ error: "Failed to update moderation item" }, { status: 500 });

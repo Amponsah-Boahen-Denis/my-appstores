@@ -1,4 +1,11 @@
-import SearchFeature from "@/features/Search/Search";
+import dynamic from "next/dynamic";
+
+export const dynamic = "force-dynamic";
+
+const SearchFeature = dynamic(() => import("@/features/Search/Search"), {
+  ssr: false,
+  loading: () => <div className="py-10 text-center text-slate-500">Loading search…</div>,
+});
 
 export default function SearchPage() {
   return (
