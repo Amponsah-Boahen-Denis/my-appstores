@@ -229,14 +229,6 @@ export default function Pricing() {
           </div>
         </div>
       </div>
-
-      <footer className="mt-12 text-center text-sm text-black/60 dark:text-white/60">
-        <p>
-          All plans include access to our store search API and community features.
-          <br />
-          <strong>Note:</strong> Payment integration and plan enforcement coming soon.
-        </p>
-      </footer>
     </section>
   );
 }
