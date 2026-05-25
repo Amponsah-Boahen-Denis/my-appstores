@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "autopush": "node scripts/autopush.js",
     "migrate-local": "node scripts/migrate-local.js"
   },
   "dependencies": {
