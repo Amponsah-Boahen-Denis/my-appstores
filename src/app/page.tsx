@@ -9,7 +9,7 @@ export default function Home() {
             <div className="space-y-6">
               <p className="inline-flex items-center rounded-full bg-[#e8f3ff] px-4 py-1 text-sm font-semibold text-[#0a66c2]">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#0a66c2] mr-2" />
-                Powered by OpenStreetMap + Smart Relevance
+                Powered by Google Places and our verified database
               </p>
               <h1 className="text-4xl font-bold tracking-tight text-[#0a66c2] sm:text-5xl">
                 Discover local stores, stock, and working hours instantly
