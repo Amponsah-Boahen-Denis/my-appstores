@@ -1,6 +1,8 @@
 "use client";
 
-import Button from "@/components/Button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 type Plan = {
   name: string;
@@ -104,9 +106,9 @@ export default function Pricing() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {PLANS.map((plan) => (
-          <article
+          <Card
             key={plan.name}
-            className={`relative rounded-xl border p-8 ${
+            className={`relative rounded-xl p-8 ${
               plan.popular
                 ? "border-blue-500 shadow-xl ring-2 ring-blue-500/20 scale-105"
                 : "border-black/10 dark:border-white/15 shadow-lg"
@@ -115,9 +117,9 @@ export default function Pricing() {
           >
             {plan.popular && (
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                <Badge className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
                   Most Popular
-                </span>
+                </Badge>
               </div>
             )}
             
@@ -142,7 +144,8 @@ export default function Pricing() {
             </ul>
 
             <div className="mt-auto">
-              <Button 
+              <Button
+                variant="default"
                 className={`w-full ${
                   plan.popular 
                     ? "bg-blue-600 hover:bg-blue-700 text-white" 
@@ -154,7 +157,7 @@ export default function Pricing() {
                 {plan.cta}
               </Button>
             </div>
-          </article>
+          </Card>
         ))}
       </div>
 

@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { StoreSubmission } from "@/services/userStores";
 
 type Props = {
@@ -15,9 +16,9 @@ export default function StoreList({ items, onEdit, onDelete }: Props) {
     return <p className="text-sm text-black/60 dark:text-white/60">You have not added any stores yet.</p>;
   }
   return (
-    <ul className="divide-y divide-black/10 dark:divide-white/15 rounded-md border border-black/10 dark:border-white/15">
+    <div className="space-y-3">
       {items.map((s) => (
-        <li key={s.id} className="p-4">
+        <Card key={s.id} className="p-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex gap-3 flex-1">
               {s.logo && (
@@ -46,9 +47,9 @@ export default function StoreList({ items, onEdit, onDelete }: Props) {
               <Button onClick={() => onDelete(s.id)}>Delete</Button>
             </div>
           </div>
-        </li>
+        </Card>
       ))}
-    </ul>
+    </div>
   );
 }
 

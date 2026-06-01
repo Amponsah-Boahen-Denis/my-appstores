@@ -10,14 +10,14 @@ export type AppRoute = {
 // Initial routes; extend as new pages are added
 export const APP_ROUTES: AppRoute[] = [
   { path: '/', name: 'Home', showInNavbar: true },
-  { path: '/Search', name: 'Search', showInNavbar: true },
-  { path: '/Search/Results', name: 'Results', showInNavbar: false },
-  { path: '/Profile', name: 'Profile', showInNavbar: true },
-  { path: '/Admin', name: 'Admin', showInNavbar: true },
-  { path: '/History', name: 'History', showInNavbar: true },
-  { path: '/Pricing', name: 'Pricing', showInNavbar: true },
-  { path: '/Auth/Login', name: 'Login', showInNavbar: false },
-  { path: '/Auth/Signup', name: 'Signup', showInNavbar: false },
+  { path: '/search', name: 'Search', showInNavbar: true },
+  { path: '/search/results', name: 'Results', showInNavbar: false },
+  { path: '/profile', name: 'Profile', showInNavbar: true },
+  { path: '/admin', name: 'Admin', showInNavbar: true },
+  { path: '/history', name: 'History', showInNavbar: true },
+  { path: '/pricing', name: 'Pricing', showInNavbar: true },
+  { path: '/auth/login', name: 'Login', showInNavbar: false },
+  { path: '/auth/signup', name: 'Signup', showInNavbar: false },
 ];
 
 // Utility to get route by path (helps avoid undefined lookups)

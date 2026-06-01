@@ -11,7 +11,8 @@ import { canAddStore, recordStoreAdded } from "@/services/userPlans";
 import PlanLimitAlert from "@/components/PlanLimitAlert";
 import { usePreferences } from "@/hooks/usePreferences";
 import { updateUserPreferences } from "@/services/preferences";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function Profile() {
   const { prefs, setPrefs } = usePreferences();
@@ -93,7 +94,7 @@ export default function Profile() {
         </div>
       </header>
 
-      <section className="grid gap-6 rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm md:grid-cols-[1.2fr_1fr]">
+      <Card className="grid gap-6 md:grid-cols-[1.2fr_1fr]">
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Profile overview</h2>
           <p className="text-sm text-slate-600">
@@ -120,12 +121,12 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className="rounded-3xl bg-[#E7F0F7] p-6">
+        <Card className="rounded-3xl bg-[#E7F0F7] p-6 border-none shadow-none">
           <p className="text-xs uppercase tracking-[0.24em] text-[#0A66C2]">Business info</p>
           <h3 className="mt-3 text-lg font-semibold text-slate-900">About your business</h3>
           <p className="mt-4 text-sm leading-7 text-slate-700">{user.bio}</p>
-        </div>
-      </section>
+        </Card>
+      </Card>
 
       {/* Profile Edit Form */}
       {isEditingProfile && (

@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { clearHistory, listHistory, SearchHistoryItem, getHistoryAnalytics, HistoryAnalytics } from "@/services/history";
 import { listStores } from "@/services/userStores";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 function StatCard({ title, value, subtitle, icon }: { title: string; value: string | number; subtitle?: string; icon: string }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/50 p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+    <Card className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/50 p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
       <div className="flex items-center gap-3">
         <div className="text-2xl">{icon}</div>
         <div>
@@ -17,7 +18,7 @@ function StatCard({ title, value, subtitle, icon }: { title: string; value: stri
           {subtitle && <p className="text-xs text-slate-500 mt-1">{subtitle}</p>}
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -38,10 +39,11 @@ function SearchHistoryCard({ item, onClick }: { item: SearchHistoryItem; onClick
   };
 
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      className="text-left rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 w-full"
       onClick={onClick}
-      className="text-left rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300"
     >
       <div className="flex items-start justify-between">
         <div className="flex-1 space-y-2">
@@ -72,7 +74,7 @@ function SearchHistoryCard({ item, onClick }: { item: SearchHistoryItem; onClick
           </div>
         </div>
       </div>
-    </button>
+    </Button>
   );
 }
 
@@ -212,7 +214,7 @@ export default function History() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Top Products */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                 <span className="text-xl">🛒</span>
                 Top Products
@@ -230,11 +232,11 @@ export default function History() {
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
 
             {/* Top Countries */}
             {analytics.topCountries.length > 0 && (
-              <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <Card className="p-6">
                 <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                   <span className="text-xl">🌍</span>
                   Top Countries
@@ -252,7 +254,7 @@ export default function History() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
             )}
           </div>
         </section>

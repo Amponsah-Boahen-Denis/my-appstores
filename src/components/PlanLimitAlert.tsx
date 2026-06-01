@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
+import { Card } from "@/components/ui/card";
 
 type Props = {
   type: "search" | "store" | "feature";
@@ -12,11 +13,11 @@ type Props = {
   onDismiss?: () => void;
 };
 
-export default function PlanLimitAlert({ 
-  type, 
-  message, 
-  suggestedPlan = "Pro", 
-  onDismiss 
+export default function PlanLimitAlert({
+  type,
+  message,
+  suggestedPlan = "Pro",
+  onDismiss,
 }: Props) {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -54,38 +55,25 @@ export default function PlanLimitAlert({
   };
 
   return (
-    <div className="rounded-lg border border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-900/20 p-4 mb-4">
-      <div className="flex items-start gap-3">
-        <span className="text-2xl">{getIcon()}</span>
-        <div className="flex-1">
-          <h3 className="font-semibold text-orange-800 dark:text-orange-200 mb-1">
-            {getTitle()}
-          </h3>
-          <p className="text-sm text-orange-700 dark:text-orange-300 mb-3">
-            {message}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <Link href="/Pricing">
-              <Button className="bg-orange-600 hover:bg-orange-700 text-white text-sm px-4 py-2">
+    <Card className="border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-900/20 p-4 mb-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl">{getIcon()}</span>
+          <div>
+            <h3 className="font-semibold text-orange-800 dark:text-orange-200 mb-1">{getTitle()}</h3>
+            <p className="text-sm text-orange-700 dark:text-orange-300 mb-3">{message}</p>
+            <div className="flex flex-wrap gap-2">
+              <ButtonLink href="/pricing" variant="default" size="sm">
                 Upgrade to {suggestedPlan}
-              </Button>
-            </Link>
-            <Button 
-              onClick={handleDismiss}
-              className="bg-gray-500 hover:bg-gray-600 text-white text-sm px-4 py-2"
-            >
-              Dismiss
-            </Button>
+              </ButtonLink>
+              <Button variant="secondary" size="sm" onClick={handleDismiss}>Dismiss</Button>
+            </div>
           </div>
         </div>
-        <button
-          onClick={handleDismiss}
-          className="text-orange-500 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-200"
-          aria-label="Dismiss alert"
-        >
+        <Button variant="ghost" size="sm" onClick={handleDismiss} className="self-start">
           ✕
-        </button>
+        </Button>
       </div>
-    </div>
+    </Card>
   );
 }

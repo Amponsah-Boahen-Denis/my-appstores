@@ -6,26 +6,27 @@ import { listUsers, setUserStatus, stats } from "@/services/adminUsers";
 import { getHistoryAnalytics, HistoryAnalytics } from "@/services/history";
 import { clearAllCaches, resetAllAnalytics, exportAllData, importData } from "@/services/adminSystem";
 import { getPendingStores, approveStore, rejectStore, getModerationStats, ModeratedStore } from "@/services/adminModeration";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FileInput } from "@/components/ui/file-input";
+import { Label } from "@/components/ui/label";
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-[1.5rem] border border-[#0A66C2]/20 bg-[#E7F0F7]/50 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5">
+    <Card className="rounded-[1.5rem] bg-[#E7F0F7]/50 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5">
       <p className="text-[11px] uppercase tracking-[0.25em] text-[#0A66C2]/70">
         {label}
       </p>
       <p className="mt-3 text-3xl font-semibold text-[#0A66C2]">{value}</p>
-    </div>
+    </Card>
   );
 }
 
 function StatusBadge({ status }: { status: UserStatus }) {
-  const color = status === "active" ? "bg-[#0A66C2]/10 text-[#0A66C2] border-[#0A66C2]/20"
-    : status === "blocked" ? "bg-red-100 text-red-700 border-red-200"
-    : "bg-amber-100 text-amber-700 border-amber-200";
+  const variant = status === "active" ? "default" : status === "blocked" ? "danger" : "secondary";
   const label = status === "on_hold" ? "On hold" : status.charAt(0).toUpperCase() + status.slice(1);
-  return <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium tracking-wide transition border ${color}`}>
-    {label}
-  </span>;
+  return <Badge variant={variant} className="uppercase tracking-wide">{label}</Badge>;
 }
 
 export default function Admin() {
@@ -169,21 +170,23 @@ export default function Admin() {
                       {store.website && <p className="text-sm text-[#0A66C2]">{store.website}</p>}
                     </div>
                     <div className="flex gap-2">
-                      <button
+                      <Button
                         onClick={() => actions.approveStore(store.id)}
-                        className="px-3 py-1 rounded-full bg-[#0A66C2] text-white hover:bg-[#0A66C2]/90 transition text-sm"
+                        variant="default"
+                        className="px-3 py-1 rounded-full text-sm"
                       >
                         Approve
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         onClick={() => {
                           const reason = prompt("Rejection reason:");
                           if (reason) actions.rejectStore(store.id, reason);
                         }}
+                        variant="secondary"
                         className="px-3 py-1 rounded-full bg-red-600 text-white hover:bg-red-700 transition text-sm"
                       >
                         Reject
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -223,9 +226,15 @@ export default function Admin() {
                     <td className="py-2 pr-4 whitespace-nowrap text-[#0A66C2]/70">{new Date(u.createdAt).toLocaleString()}</td>
                     <td className="py-2 pr-4 whitespace-nowrap flex gap-2 flex-wrap">
                       {u.status !== "active" && (
-                        <button onClick={() => actions.activate(u.id)} className="px-3 py-1 rounded-full bg-[#0A66C2] text-white hover:bg-[#0A66C2]/90 transition text-xs">
+                        <Button
+                          type="button"
+                          variant="default"
+                          size="sm"
+                          onClick={() => actions.activate(u.id)}
+                          className="px-3 py-1 rounded-full bg-[#0A66C2] text-white hover:bg-[#0A66C2]/90 transition text-xs"
+                        >
                           {u.status === "on_hold" ? "Approve" : "Activate"}
-                        </button>
+                        </Button>
                       )}
                     </td>
                   </tr>
@@ -242,46 +251,48 @@ export default function Admin() {
           <span className="text-sm text-[#0A66C2]/70">Backup and maintenance</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="rounded-2xl border border-[#0A66C2]/20 bg-[#E7F0F7]/50 p-4 space-y-3 shadow-sm">
+          <Card className="rounded-2xl bg-[#E7F0F7]/50 p-4 space-y-3 shadow-sm border-[#0A66C2]/20">
             <h3 className="font-medium text-[#0A66C2]">System Controls</h3>
             <div className="space-y-2">
-              <button
+              <Button
                 onClick={actions.clearCaches}
-                className="w-full px-4 py-2 bg-[#0A66C2] text-white rounded-full hover:bg-[#0A66C2]/90 transition text-sm"
+                variant="default"
+                className="w-full px-4 py-2 rounded-full text-sm"
               >
                 Clear All Caches
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={actions.resetAnalytics}
-                className="w-full px-4 py-2 bg-amber-600 text-white rounded-full hover:bg-amber-700 transition text-sm"
+                variant="secondary"
+                className="w-full px-4 py-2 rounded-full bg-amber-600 text-white hover:bg-amber-700 transition text-sm"
               >
                 Reset Analytics
-              </button>
+              </Button>
             </div>
-          </div>
-          <div className="rounded-2xl border border-[#0A66C2]/20 bg-[#E7F0F7]/50 p-4 space-y-3 shadow-sm">
+          </Card>
+          <Card className="rounded-2xl bg-[#E7F0F7]/50 p-4 space-y-3 shadow-sm border-[#0A66C2]/20">
             <h3 className="font-medium text-[#0A66C2]">Data Backup</h3>
             <div className="space-y-2">
-              <button
+              <Button
                 onClick={actions.exportData}
-                className="w-full px-4 py-2 bg-[#0A66C2] text-white rounded-full hover:bg-[#0A66C2]/90 transition text-sm"
+                variant="default"
+                className="w-full px-4 py-2 rounded-full text-sm"
               >
                 Export All Data
-              </button>
-              <label className="block">
-                <span className="text-sm text-[#0A66C2]/70">Import Data:</span>
-                <input
-                  type="file"
+              </Button>
+              <div className="space-y-2">
+                <Label className="text-sm text-[#0A66C2]/70">Import Data:</Label>
+                <FileInput
                   accept=".json"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) actions.importData(file);
                   }}
-                  className="mt-1 block w-full text-sm text-[#0A66C2]/70 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#E7F0F7] file:text-[#0A66C2] hover:file:bg-[#E7F0F7]/80"
+                  className="mt-1 text-[#0A66C2]/70 file:bg-[#E7F0F7] file:text-[#0A66C2] hover:file:bg-[#E7F0F7]/80"
                 />
-              </label>
+              </div>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
     </main>

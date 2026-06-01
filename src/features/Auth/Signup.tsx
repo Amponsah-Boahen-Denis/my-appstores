@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type SignupFormData = {
   name: string;
@@ -144,13 +147,14 @@ export default function Signup() {
               </p>
             </div>
 
-            <button
+            <Button
               type="button"
+              variant="secondary"
+              className="flex w-full items-center justify-center gap-3 rounded-full px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               onClick={() => alert("Google sign-up placeholder")}
-              className="flex w-full items-center justify-center gap-3 rounded-full border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
               Continue with Google
-            </button>
+            </Button>
             <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
               <span className="h-px flex-1 bg-slate-200" />
               <span>or use your email</span>
@@ -165,22 +169,18 @@ export default function Signup() {
               )}
 
               <div className="space-y-3">
-                <label htmlFor="name" className="text-sm font-medium text-slate-700">
-                  Full Name
-                </label>
-                <input
+                <Label htmlFor="name">Full Name</Label>
+                <Input
                   id="name"
                   name="name"
                   type="text"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full rounded-xl border px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-[#0a66c2] focus:outline-none focus:ring-2 focus:ring-[#dbe9ff] ${
-                    errors.name ? "border-red-300" : "border-slate-200"
-                  }`}
                   placeholder="Jane Doe"
                   aria-required="true"
                   aria-invalid={!!errors.name}
                   aria-describedby={errors.name ? "name-error" : undefined}
+                  className={errors.name ? "border-red-300" : "border-slate-200"}
                 />
                 {errors.name && (
                   <p id="name-error" className="text-sm text-red-600">
@@ -190,22 +190,18 @@ export default function Signup() {
               </div>
 
               <div className="space-y-3">
-                <label htmlFor="email" className="text-sm font-medium text-slate-700">
-                  Email Address
-                </label>
-                <input
+                <Label htmlFor="email">Email Address</Label>
+                <Input
                   id="email"
                   name="email"
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full rounded-xl border px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-[#0a66c2] focus:outline-none focus:ring-2 focus:ring-[#dbe9ff] ${
-                    errors.email ? "border-red-300" : "border-slate-200"
-                  }`}
                   placeholder="you@example.com"
                   aria-required="true"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? "email-error" : undefined}
+                  className={errors.email ? "border-red-300" : "border-slate-200"}
                 />
                 {errors.email && (
                   <p id="email-error" className="text-sm text-red-600">
@@ -215,22 +211,18 @@ export default function Signup() {
               </div>
 
               <div className="space-y-3">
-                <label htmlFor="password" className="text-sm font-medium text-slate-700">
-                  Password
-                </label>
-                <input
+                <Label htmlFor="password">Password</Label>
+                <Input
                   id="password"
                   name="password"
                   type="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`w-full rounded-xl border px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-[#0a66c2] focus:outline-none focus:ring-2 focus:ring-[#dbe9ff] ${
-                    errors.password ? "border-red-300" : "border-slate-200"
-                  }`}
                   placeholder="Create a strong password"
                   aria-required="true"
                   aria-invalid={!!errors.password}
                   aria-describedby={errors.password ? "password-error" : undefined}
+                  className={errors.password ? "border-red-300" : "border-slate-200"}
                 />
                 {errors.password && (
                   <p id="password-error" className="text-sm text-red-600">
@@ -245,22 +237,18 @@ export default function Signup() {
               </div>
 
               <div className="space-y-3">
-                <label htmlFor="confirmPassword" className="text-sm font-medium text-slate-700">
-                  Confirm Password
-                </label>
-                <input
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
                   id="confirmPassword"
                   name="confirmPassword"
                   type="password"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className={`w-full rounded-xl border px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-[#0a66c2] focus:outline-none focus:ring-2 focus:ring-[#dbe9ff] ${
-                    errors.confirmPassword ? "border-red-300" : "border-slate-200"
-                  }`}
                   placeholder="Confirm your password"
                   aria-required="true"
                   aria-invalid={!!errors.confirmPassword}
                   aria-describedby={errors.confirmPassword ? "confirm-password-error" : undefined}
+                  className={errors.confirmPassword ? "border-red-300" : "border-slate-200"}
                 />
                 {errors.confirmPassword && (
                   <p id="confirm-password-error" className="text-sm text-red-600">
@@ -270,21 +258,21 @@ export default function Signup() {
               </div>
 
               <div className="flex items-start gap-3 text-sm text-slate-600">
-                <input
-                  type="checkbox"
-                  className="mt-1 h-4 w-4 rounded border-slate-300 text-[#0a66c2] focus:ring-[#0a66c2]"
-                  required
-                />
-                <p>
-                  I agree to the{' '}
-                  <Link href="/terms" className="font-semibold text-[#0a66c2] transition hover:text-[#004a86]">
-                    Terms of Service
-                  </Link>{' '}
-                  and{' '}
-                  <Link href="/privacy" className="font-semibold text-[#0a66c2] transition hover:text-[#004a86]">
-                    Privacy Policy
-                  </Link>.
-                </p>
+                <label className="flex items-start gap-2">
+                  <Checkbox
+                    required
+                  />
+                  <span>
+                    I agree to the{' '}
+                    <Link href="/terms" className="font-semibold text-[#0a66c2] transition hover:text-[#004a86]">
+                      Terms of Service
+                    </Link>{' '}
+                    and{' '}
+                    <Link href="/privacy" className="font-semibold text-[#0a66c2] transition hover:text-[#004a86]">
+                      Privacy Policy
+                    </Link>.
+                  </span>
+                </label>
               </div>
 
               <Button
@@ -298,7 +286,7 @@ export default function Signup() {
 
             <div className="text-center text-sm text-slate-600">
               Already have an account?{' '}
-              <Link href="/Auth/Login" className="font-semibold text-[#0a66c2] transition hover:text-[#004a86]">
+              <Link href="/auth/login" className="font-semibold text-[#0a66c2] transition hover:text-[#004a86]">
                 Sign in
               </Link>
             </div>

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ButtonLink } from "@/components/ui/button-link";
 import { getCurrentUserPlan, getRemainingSearches, getRemainingStoreSlots, getPlanDisplayName, getUpgradeSuggestions } from "@/services/userPlans";
 
 export default function PlanStatus() {
@@ -40,22 +42,25 @@ export default function PlanStatus() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+    <Card className="p-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-lg">Your Plan</h3>
-        <Link href="/Pricing">
-          <button className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 text-sm font-medium">
-            Upgrade
-          </button>
-        </Link>
+        <ButtonLink
+          href="/pricing"
+          variant="ghost"
+          size="sm"
+          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
+        >
+          Upgrade
+        </ButtonLink>
       </div>
 
       {/* Current Plan */}
       <div className="mb-4">
         <div className="flex items-center gap-2">
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPlanColor(plan.planType)}`}>
+          <Badge className={`rounded-full px-3 py-1 text-sm font-medium ${getPlanColor(plan.planType)}`}>
             {getPlanDisplayName(plan.planType)}
-          </span>
+          </Badge>
           {plan.planType === "starter" && (
             <span className="text-xs text-gray-500 dark:text-gray-400">Free</span>
           )}

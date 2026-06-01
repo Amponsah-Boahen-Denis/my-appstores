@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+
 type Props = {
   value: "grid" | "list";
   onChange: (value: "grid" | "list") => void;
@@ -7,23 +9,25 @@ type Props = {
 
 export default function LayoutToggle({ value, onChange }: Props) {
   return (
-    <div className="inline-flex rounded-md border border-black/10 dark:border-white/15 overflow-hidden" role="group" aria-label="Toggle layout">
-      <button
+    <div className="inline-flex rounded-full border border-slate-200 overflow-hidden" role="group" aria-label="Toggle layout">
+      <Button
         type="button"
-        aria-pressed={value === "grid"}
-        className={`px-3 py-1.5 text-sm ${value === "grid" ? "bg-black text-white dark:bg-white dark:text-black" : "hover:bg-black/5 dark:hover:bg-white/10"}`}
+        variant={value === "grid" ? "default" : "ghost"}
+        size="sm"
+        className="rounded-none"
         onClick={() => onChange("grid")}
       >
         Grid
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
-        aria-pressed={value === "list"}
-        className={`px-3 py-1.5 text-sm border-l border-black/10 dark:border-white/15 ${value === "list" ? "bg-black text-white dark:bg-white dark:text-black" : "hover:bg-black/5 dark:hover:bg-white/10"}`}
+        variant={value === "list" ? "default" : "ghost"}
+        size="sm"
+        className="rounded-none border-l border-slate-200"
         onClick={() => onChange("list")}
       >
         List
-      </button>
+      </Button>
     </div>
   );
 }

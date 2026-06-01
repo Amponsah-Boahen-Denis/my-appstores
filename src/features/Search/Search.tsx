@@ -21,6 +21,7 @@ import { canPerformSearch, recordSearch } from "@/services/userPlans";
 import PlanLimitAlert from "@/components/PlanLimitAlert";
 import SearchFilters from "@/components/SearchFilters";
 import { applyFilters, FilterOptions } from "@/utils/searchFilters";
+import { Card } from "@/components/ui/card";
 
 type SearchState = {
   product: string;
@@ -47,8 +48,6 @@ export default function Search() {
     maxResults: 20,
   });
 
-  
-
   useEffect(() => {
     detectBrowserLocation().catch(() => {});
   }, []);
@@ -70,14 +69,13 @@ export default function Search() {
     const recordHistory = options?.recordHistory !== false;
     setError(null);
     setPlanLimitError(null);
-    
-    // Check plan limits before proceeding
+
     const searchCheck = canPerformSearch();
     if (!searchCheck.allowed) {
       setPlanLimitError(searchCheck.reason || "Search limit reached");
       return;
     }
-    
+
     setIsLoading(true);
     try {
       const rawProduct = extractProductName(sanitizeInput(data.product));
@@ -101,11 +99,7 @@ export default function Search() {
         }
       }
 
-      // Plan-based target results (Starter default 20; Pro 200; Business 500).
-      // For now infer from filters.maxResults as a proxy; backend will use plan limits.
       const targetResults = Math.max(filters.maxResults, 20);
-
-      // DB-first cache via MongoDB snapshots
       const cacheKey = makeCacheKey(rawProduct, requestedCategories.length > 0 ? requestedCategories : null, country || undefined, coords?.lat, coords?.lon, 5000);
       const snap = await getSnapshot(cacheKey);
 
@@ -138,7 +132,6 @@ export default function Search() {
         if (!coords) throw new Error("Failed to resolve location.");
         stores = await findNearbyStores(coords.lat, coords.lon, rawProduct, 5000, requestedCategories.length > 0 ? requestedCategories : null);
 
-        // Write-back cache: upsert canonical stores and snapshot
         const ids = await upsertStores(stores, requestedCategories.length > 0 ? requestedCategories : category?.category || null);
         await upsertSnapshot({
           key: cacheKey,
@@ -157,30 +150,23 @@ export default function Search() {
         relevanceScore: scoreRelevance(rawProduct, { name: s.name, tags: s.tags, category: categoryName }),
       }));
       const ordered = sortByRelevance(scored);
-      
-      // Convert to simplified SearchResult format
       const simplifiedResults = ordered.map(toSearchResult);
       setResults(simplifiedResults);
-      
-      // Track store appearances in analytics
+
       ordered.forEach((store) => {
         trackStoreAppearance(store.id, store.name);
       });
-      
-      // Increment total search count
+
       incrementSearchCount();
-      
-      // Apply initial filters
+
       const filtered = applyFilters(simplifiedResults, filters);
       setFilteredResults(filtered);
 
-      // Record successful search
       recordSearch();
 
       if (ordered.length === 0) {
         setError("Failed to fetch stores");
       }
-      // Log history when we have a valid response (even if empty, skip)
       if (ordered.length > 0 && recordHistory) {
         await addHistory({ product: rawProduct, country, location, resultsCount: ordered.length });
       }
@@ -227,17 +213,24 @@ export default function Search() {
   };
 
   return (
-    <section className="space-y-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">Search</h1>
-        <LayoutToggle value={prefsLayout} onChange={handleLayoutChange} />
-      </div>
+    <section className="space-y-6">
+      <Card className="p-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight">Search</h1>
+            <p className="mt-1 text-sm text-slate-600">Find stores and refine results with filter controls.</p>
+          </div>
+          <LayoutToggle value={prefsLayout} onChange={handleLayoutChange} />
+        </div>
+      </Card>
+
       <SearchForm
         defaultProduct={state.product}
         defaultCountry={state.country}
         defaultLocation={state.location}
         onSubmit={handleSubmit}
       />
+
       {planLimitError && (
         <PlanLimitAlert
           type="search"
@@ -247,26 +240,39 @@ export default function Search() {
           onDismiss={() => setPlanLimitError(null)}
         />
       )}
-      {isLoading && <LoadingSpinner />}
-      {error && <ErrorAlert message={error} />}
+
+      {isLoading && (
+        <Card className="p-6">
+          <LoadingSpinner />
+        </Card>
+      )}
+
+      {error && (
+        <Card className="border border-rose-200 bg-rose-50 p-4">
+          <ErrorAlert message={error} />
+        </Card>
+      )}
+
       {!isLoading && !error && results.length > 0 && (
-        <>
+        <Card className="space-y-4 p-6">
           <SearchFilters
             results={results}
             onFiltersChange={handleFiltersChange}
             onClearFilters={handleClearFilters}
             hasResults={results.length > 0}
           />
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-slate-600">
               Showing {filteredResults.length} of {results.length} stores
               {filteredResults.length !== results.length && (
-                <span className="ml-1 text-blue-600 dark:text-blue-400">(filtered)</span>
+                <span className="ml-1 text-blue-600">(filtered)</span>
               )}
             </p>
           </div>
+
           <ResultsList items={filteredResults} layout={prefsLayout} />
-        </>
+        </Card>
       )}
     </section>
   );

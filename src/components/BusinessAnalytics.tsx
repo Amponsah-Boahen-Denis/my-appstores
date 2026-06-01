@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Card } from "@/components/ui/card";
 import { getBusinessAnalytics } from "@/services/businessAnalytics";
 import type { BusinessAnalytics } from "@/services/businessAnalytics";
 
@@ -23,30 +24,30 @@ export default function BusinessAnalytics() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-[#E7F0F7] border border-[#0A66C2]/20 p-4 rounded-lg">
+        <Card className="bg-[#E7F0F7] border-[#0A66C2]/20 p-4 rounded-lg">
           <p className="text-xs text-[#0A66C2] font-medium">Total Stores</p>
           <p className="text-2xl font-bold text-[#0A66C2] mt-1">{analytics.totalStores}</p>
-        </div>
+        </Card>
 
-        <div className="bg-[#E7F0F7] border border-[#0A66C2]/20 p-4 rounded-lg">
+        <Card className="bg-[#E7F0F7] border-[#0A66C2]/20 p-4 rounded-lg">
           <p className="text-xs text-[#0A66C2] font-medium">Search Appearances</p>
           <p className="text-2xl font-bold text-[#0A66C2] mt-1">{analytics.totalAppearances}</p>
-        </div>
+        </Card>
 
-        <div className="bg-[#E7F0F7] border border-[#0A66C2]/20 p-4 rounded-lg">
+        <Card className="bg-[#E7F0F7] border-[#0A66C2]/20 p-4 rounded-lg">
           <p className="text-xs text-[#0A66C2] font-medium">Avg per Store</p>
           <p className="text-2xl font-bold text-[#0A66C2] mt-1">{analytics.averageAppearancesPerStore}</p>
-        </div>
+        </Card>
 
-        <div className="bg-[#E7F0F7] border border-[#0A66C2]/20 p-4 rounded-lg">
+        <Card className="bg-[#E7F0F7] border-[#0A66C2]/20 p-4 rounded-lg">
           <p className="text-xs text-[#0A66C2] font-medium">Total Clicks</p>
           <p className="text-2xl font-bold text-[#0A66C2] mt-1">{analytics.totalClicks}</p>
-        </div>
+        </Card>
       </div>
 
       {/* Store Details */}
       {analytics.stores.length > 0 ? (
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
+        <Card className="bg-white rounded-lg p-4 border-gray-200">
           <h3 className="text-sm font-medium mb-3 text-gray-900">Store Performance</h3>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {analytics.stores.map((store) => (
@@ -77,13 +78,13 @@ export default function BusinessAnalytics() {
               </div>
             ))}
           </div>
-        </div>
+        </Card>
       ) : (
-        <div className="bg-[#E7F0F7] border border-[#0A66C2]/20 p-6 rounded-lg text-center">
+        <Card className="bg-[#E7F0F7] border-[#0A66C2]/20 p-6 rounded-lg text-center">
           <p className="text-sm text-[#0A66C2]">
             No analytics yet. Submit a store and search for products to see analytics here.
           </p>
-        </div>
+        </Card>
       )}
     </section>
   );

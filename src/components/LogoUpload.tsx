@@ -3,6 +3,9 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { useLogoUpload } from "@/hooks/useLogoUpload";
+import { Button } from "@/components/ui/button";
+import { HiddenInput } from "@/components/ui/hidden-input";
+import { Label } from "@/components/ui/label";
 
 type Props = {
   onUpload: (url: string) => void;
@@ -40,24 +43,22 @@ export default function LogoUpload({ onUpload, currentLogo, label = "Upload Logo
   return (
     <div className="space-y-3">
       <div>
-        <label className="block text-sm font-medium text-black dark:text-white mb-2">
-          {label}
-        </label>
-        <button
+        <Label htmlFor="logo-upload-button">{label}</Label>
+        <Button
           type="button"
+          id="logo-upload-button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          className="px-4 py-2 rounded-md text-sm"
         >
           {isUploading ? "Uploading..." : "Choose Image"}
-        </button>
-        <input
+        </Button>
+        <HiddenInput
           ref={fileInputRef}
-          type="file"
+          id="logo-upload-input"
           accept="image/jpeg,image/png,image/webp"
           onChange={handleFileSelect}
           disabled={isUploading}
-          className="hidden"
         />
         <p className="text-xs text-gray-500 mt-1">JPG, PNG, or WebP. Max 5MB</p>
       </div>
@@ -65,13 +66,14 @@ export default function LogoUpload({ onUpload, currentLogo, label = "Upload Logo
       {error && (
         <div className="text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
           ❌ {error}
-          <button
+          <Button
             type="button"
+            variant="ghost"
             onClick={() => setError(null)}
-            className="underline text-xs"
+            className="underline text-xs p-0 h-auto"
           >
             Dismiss
-          </button>
+          </Button>
         </div>
       )}
 
@@ -84,16 +86,17 @@ export default function LogoUpload({ onUpload, currentLogo, label = "Upload Logo
             height={80}
             className="w-20 h-20 object-cover rounded-md border border-black/10 dark:border-white/15"
           />
-          <button
+          <Button
             type="button"
+            variant="ghost"
             onClick={() => {
               setPreview(null);
               if (fileInputRef.current) fileInputRef.current.value = "";
             }}
-            className="text-xs text-red-600 dark:text-red-400 underline mt-2"
+            className="text-xs text-red-600 dark:text-red-400 underline mt-2 p-0 h-auto"
           >
             Remove
-          </button>
+          </Button>
         </div>
       )}
     </div>

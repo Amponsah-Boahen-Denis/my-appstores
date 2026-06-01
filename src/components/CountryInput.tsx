@@ -1,5 +1,8 @@
 "use client";
 
+import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
+
 type Props = {
   value: string;
   onChange: (value: string) => void;
@@ -36,20 +39,14 @@ const COUNTRIES = [
 
 export default function CountryInput({ value, onChange, id, label = "Country" }: Props) {
   return (
-    <div className="flex flex-col gap-1">
-      <label htmlFor={id} className="text-sm font-medium text-gray-900">{label}</label>
-      <select
+    <div className="flex flex-col gap-2">
+      <Label htmlFor={id}>{label}</Label>
+      <Select
         id={id}
-        aria-label="Select country"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-10 rounded-lg border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-500 transition-all duration-200 ease-out focus:border-[#0A66C2] focus:outline-none focus:ring-2 focus:ring-[#E7F0F7]"
-      >
-        <option value="">Select a country</option>
-        {COUNTRIES.map((c) => (
-          <option key={c} value={c} className="text-black">{c}</option>
-        ))}
-      </select>
+        options={[{ label: "Select a country", value: "" }, ...COUNTRIES.map((c) => ({ label: c, value: c }))]}
+      />
     </div>
   );
 }

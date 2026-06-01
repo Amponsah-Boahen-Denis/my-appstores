@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { UserPreferences } from "@/services/preferences";
 
 type Props = {
@@ -65,85 +68,76 @@ export default function ProfileForm({ initial, onSubmit, onCancel, isLoading = f
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">
-          Name *
-        </label>
-        <input
+        <Label htmlFor="profile-name">Name *</Label>
+        <Input
+          id="profile-name"
           type="text"
           value={data.name}
           onChange={(e) => handleChange("name", e.target.value)}
           placeholder="Your name"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 text-sm placeholder:text-gray-500 transition-all duration-200 ease-out focus:border-[#0A66C2] focus:outline-none focus:ring-2 focus:ring-[#E7F0F7] hover:border-gray-400"
           disabled={isLoading}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">
-          Email *
-        </label>
-        <input
+        <Label htmlFor="profile-email">Email *</Label>
+        <Input
+          id="profile-email"
           type="email"
           value={data.email}
           onChange={(e) => handleChange("email", e.target.value)}
           placeholder="your@email.com"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 text-sm placeholder:text-gray-500 transition-all duration-200 ease-out focus:border-[#0A66C2] focus:outline-none focus:ring-2 focus:ring-[#E7F0F7] hover:border-gray-400"
           disabled={isLoading}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">
-          Phone
-        </label>
-        <input
+        <Label htmlFor="profile-phone">Phone</Label>
+        <Input
+          id="profile-phone"
           type="tel"
           value={data.phone}
           onChange={(e) => handleChange("phone", e.target.value)}
           placeholder="+1 (555) 000-0000"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 text-sm placeholder:text-gray-500 transition-all duration-200 ease-out focus:border-[#0A66C2] focus:outline-none focus:ring-2 focus:ring-[#E7F0F7] hover:border-gray-400"
           disabled={isLoading}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">
-          Bio
-        </label>
-        <textarea
+        <Label htmlFor="profile-bio">Bio</Label>
+        <Textarea
+          id="profile-bio"
           value={data.bio}
           onChange={(e) => handleChange("bio", e.target.value)}
           placeholder="Tell us about yourself or your business"
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 text-sm placeholder:text-gray-500 transition-all duration-200 ease-out focus:border-[#0A66C2] focus:outline-none focus:ring-2 focus:ring-[#E7F0F7] hover:border-gray-400 resize-none"
           disabled={isLoading}
         />
         <p className="text-xs text-gray-600 mt-1">Max 500 characters</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1">
-          Website
-        </label>
-        <input
+        <Label htmlFor="profile-website">Website</Label>
+        <Input
+          id="profile-website"
           type="url"
           value={data.website}
           onChange={(e) => handleChange("website", e.target.value)}
           placeholder="https://yourwebsite.com"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 text-sm placeholder:text-gray-500 transition-all duration-200 ease-out focus:border-[#0A66C2] focus:outline-none focus:ring-2 focus:ring-[#E7F0F7] hover:border-gray-400"
           disabled={isLoading}
         />
       </div>
 
       <div className="flex gap-2 justify-end pt-4">
-        <button
+        <Button
           type="button"
-          onClick={onCancel}
+          variant="secondary"
           disabled={isLoading}
-          className="px-4 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700"
+          onClick={onCancel}
+          className="px-4 py-2 text-sm rounded-md"
         >
           Cancel
-        </button>
+        </Button>
         <Button
           type="submit"
           disabled={isLoading}

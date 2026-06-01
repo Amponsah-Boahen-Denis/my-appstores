@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ErrorAlert from "@/components/ErrorAlert";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type SearchResult = {
   id: string;
@@ -80,7 +83,7 @@ export default function StoreSearchWidget() {
   };
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6">
+    <Card className="p-6">
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Search Our Database</h3>
@@ -91,32 +94,26 @@ export default function StoreSearchWidget() {
 
         <form onSubmit={handleSearch} className="space-y-4">
           <div className="space-y-1">
-            <label htmlFor="storeName" className="text-sm font-medium text-gray-900">
-              Store Name *
-            </label>
-            <input
+            <Label htmlFor="storeName">Store Name *</Label>
+            <Input
               id="storeName"
               name="storeName"
               type="text"
               value={searchData.storeName}
               onChange={handleInputChange}
               placeholder="store name"
-              className="w-full h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-500 transition-all duration-200 ease-out focus:border-[#0A66C2] focus:outline-none focus:ring-2 focus:ring-[#E7F0F7] hover:border-gray-400"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="address" className="text-sm font-medium text-gray-900">
-              Address (Optional)
-            </label>
-            <input
+            <Label htmlFor="address">Address (Optional)</Label>
+            <Input
               id="address"
               name="address"
               type="text"
               value={searchData.address}
               onChange={handleInputChange}
               placeholder="address"
-              className="w-full h-10 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-500 transition-all duration-200 ease-out focus:border-[#0A66C2] focus:outline-none focus:ring-2 focus:ring-[#E7F0F7] hover:border-gray-400"
             />
           </div>
 
@@ -150,7 +147,7 @@ export default function StoreSearchWidget() {
             <p className="text-sm font-medium text-gray-900">Found {results.length} store(s):</p>
             <div className="space-y-2">
               {results.map((store) => (
-                <div
+                <Card
                   key={store.id}
                   className="rounded-md bg-[#E7F0F7] p-3 border border-[#0A66C2]/20"
                 >
@@ -185,7 +182,7 @@ export default function StoreSearchWidget() {
                       ID: {store.id}
                     </p>
                   </div>
-                </div>
+                </Card>
               ))}
             </div>
           </div>
@@ -203,6 +200,6 @@ export default function StoreSearchWidget() {
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

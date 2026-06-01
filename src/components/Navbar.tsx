@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getNavbarRoutes } from "@/routes/AppRoutes";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -22,55 +24,52 @@ export default function Navbar() {
           my-best
         </Link>
 
-        <button
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
           onClick={() => setMobileOpen((v) => !v)}
           className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#0a66c2] text-[#0a66c2] md:hidden"
           aria-label="Toggle menu"
         >
           <span className="text-xl">☰</span>
-        </button>
+        </Button>
 
         <ul className="hidden items-center gap-2 text-sm font-medium md:flex">
           {routes.map((route) => {
             const isActive = pathname === route.path;
             return (
               <li key={route.path}>
-                <Link
+                <ButtonLink
                   href={route.path}
-                  className={`rounded-full px-4 py-2 transition-colors focus-visible:outline-none focus-visible:ring focus-visible:ring-[#0a66c2]/40 ${
-                    isActive
-                      ? "border border-[#0a66c2] bg-white text-[#0a66c2] shadow-sm"
-                      : "text-[#0a66c2] hover:bg-[#e7f3ff] hover:text-[#003c7b]"
-                  }`}
+                  variant={isActive ? "default" : "ghost"}
+                  size="sm"
+                  className={isActive ? "border border-[#0a66c2] shadow-sm" : "text-[#0a66c2] hover:bg-[#e7f3ff] hover:text-[#003c7b]"}
                 >
                   {route.name}
-                </Link>
+                </ButtonLink>
               </li>
             );
           })}
         </ul>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Link
-            href="/Auth/Login"
-            className={`rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${
-              pathname === "/Auth/Login"
-                ? "border border-[#0a66c2] bg-white text-[#0a66c2]"
-                : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"
-            }`}
+          <ButtonLink
+            href="/auth/login"
+            variant={pathname === "/auth/login" ? "secondary" : "ghost"}
+            size="sm"
+            className={pathname === "/auth/login" ? "border border-[#0a66c2] text-[#0a66c2]" : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"}
           >
             Login
-          </Link>
-          <Link
-            href="/Auth/Signup"
-            className={`rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${
-              pathname === "/Auth/Signup"
-                ? "border border-[#0a66c2] bg-white text-[#0a66c2]"
-                : "bg-[#0a66c2] text-white hover:bg-[#004a86]"
-            }`}
+          </ButtonLink>
+          <ButtonLink
+            href="/auth/signup"
+            variant={pathname === "/auth/signup" ? "default" : "default"}
+            size="sm"
+            className={pathname === "/auth/signup" ? "bg-[#0a66c2] text-white hover:bg-[#004a86]" : "bg-[#0a66c2] text-white hover:bg-[#004a86]"}
           >
             Sign up
-          </Link>
+          </ButtonLink>
         </div>
       </div>
 
@@ -81,45 +80,39 @@ export default function Navbar() {
               const isActive = pathname === route.path;
               return (
                 <li key={route.path}>
-                  <Link
+                  <ButtonLink
                     href={route.path}
                     onClick={closeMenu}
-                    className={`block rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                      isActive
-                        ? "border border-[#0a66c2] bg-[#e8f3ff] text-[#0a66c2]"
-                        : "text-[#0a66c2] hover:bg-[#e7f3ff]"
-                    }`}
+                    variant={isActive ? "default" : "ghost"}
+                    size="sm"
+                    className={isActive ? "block rounded-lg border border-[#0a66c2] bg-[#e8f3ff] text-[#0a66c2] px-4 py-2 text-sm font-semibold" : "block rounded-lg px-4 py-2 text-sm font-semibold text-[#0a66c2] hover:bg-[#e7f3ff]"}
                   >
                     {route.name}
-                  </Link>
+                  </ButtonLink>
                 </li>
               );
             })}
             <li>
-              <Link
-                href="/Auth/Login"
+              <ButtonLink
+                href="/auth/login"
                 onClick={closeMenu}
-                className={`block rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                  pathname === "/Auth/Login"
-                    ? "border border-[#0a66c2] bg-[#e8f3ff] text-[#0a66c2]"
-                    : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"
-                }`}
+                variant={pathname === "/auth/login" ? "secondary" : "ghost"}
+                size="sm"
+                className={pathname === "/auth/login" ? "block rounded-lg border border-[#0a66c2] bg-[#e8f3ff] text-[#0a66c2] px-4 py-2 text-sm font-semibold" : "block rounded-lg border border-[#0a66c2] px-4 py-2 text-sm font-semibold text-[#0a66c2] hover:bg-[#e7f3ff]"}
               >
                 Login
-              </Link>
+              </ButtonLink>
             </li>
             <li>
-              <Link
-                href="/Auth/Signup"
+              <ButtonLink
+                href="/auth/signup"
                 onClick={closeMenu}
-                className={`block rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                  pathname === "/Auth/Signup"
-                    ? "border border-[#0a66c2] bg-[#e8f3ff] text-[#0a66c2]"
-                    : "bg-[#0a66c2] text-white hover:bg-[#004a86]"
-                }`}
+                variant="default"
+                size="sm"
+                className="block rounded-lg bg-[#0a66c2] px-4 py-2 text-sm font-semibold text-white hover:bg-[#004a86]"
               >
                 Sign up
-              </Link>
+              </ButtonLink>
             </li>
           </ul>
         </div>
