@@ -16,35 +16,44 @@ export default function StoreList({ items, onEdit, onDelete }: Props) {
     return <p className="text-sm text-black/60 dark:text-white/60">You have not added any stores yet.</p>;
   }
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {items.map((s) => (
-        <Card key={s.id} className="p-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex gap-3 flex-1">
+        <Card key={s.id} className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="flex gap-4 flex-1">
               {s.logo && (
                 <Image
                   src={s.logo}
                   alt={`${s.name} logo`}
                   width={48}
                   height={48}
-                  className="w-12 h-12 object-contain rounded flex-shrink-0"
+                  className="w-12 h-12 rounded-2xl object-contain flex-shrink-0"
                 />
               )}
-              <div className="space-y-1 flex-1">
-                <h3 className="font-medium">{s.name}</h3>
-                <p className="text-xs text-black/70 dark:text-white/70">{s.address}</p>
-                <p className="text-xs text-black/60 dark:text-white/60">{s.country}</p>
-                <div className="text-xs text-black/60 dark:text-white/60 space-y-1">
-                  {s.website && <div>🌐 <a className="underline text-blue-600 dark:text-blue-400" href={s.website} target="_blank" rel="noopener noreferrer">Website</a></div>}
-                  {s.email && <div>✉️ {s.email}</div>}
-                  {s.phone && <div>📞 {s.phone}</div>}
-                  {s.lat && s.lon && <div>📍 {s.lat.toFixed(4)}, {s.lon.toFixed(4)}</div>}
+              <div className="space-y-2 flex-1">
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-lg font-semibold text-slate-900">{s.name}</h3>
+                  <p className="text-sm text-slate-500">{s.address}</p>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <p className="text-sm text-slate-500">{s.country}</p>
+                  {s.description && <p className="text-sm text-slate-600">{s.description}</p>}
+                </div>
+                <div className="grid gap-2 sm:grid-cols-2 text-sm text-slate-500">
+                  {s.website && (
+                    <a className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700" href={s.website} target="_blank" rel="noopener noreferrer">
+                      🌐 Website
+                    </a>
+                  )}
+                  {s.email && <span>✉️ {s.email}</span>}
+                  {s.phone && <span>📞 {s.phone}</span>}
+                  {s.lat && s.lon && <span>📍 {s.lat.toFixed(4)}, {s.lon.toFixed(4)}</span>}
                 </div>
               </div>
             </div>
-            <div className="shrink-0 flex items-center gap-2">
-              <Button variant="secondary" onClick={() => onEdit(s)}>Edit</Button>
-              <Button onClick={() => onDelete(s.id)}>Delete</Button>
+            <div className="flex flex-wrap items-center gap-2 justify-end">
+              <Button variant="secondary" size="sm" onClick={() => onEdit(s)}>Edit</Button>
+              <Button size="sm" onClick={() => onDelete(s.id)}>Delete</Button>
             </div>
           </div>
         </Card>

@@ -27,6 +27,7 @@ export default function StoreForm({ initial, onSubmit, onCancel }: Props) {
   const [phone, setPhone] = useState(initial?.phone || "");
   const [email, setEmail] = useState(initial?.email || "");
   const [website, setWebsite] = useState(initial?.website || "");
+  const [description, setDescription] = useState(initial?.description || "");
   const [lat, setLat] = useState(initial?.lat?.toString() || "");
   const [lon, setLon] = useState(initial?.lon?.toString() || "");
   const [workingHours, setWorkingHours] = useState(initial?.workingHours || "");
@@ -47,6 +48,7 @@ export default function StoreForm({ initial, onSubmit, onCancel }: Props) {
       email: email ? sanitizeInput(String(email)) : null,
       phone: phone ? sanitizeInput(String(phone)) : null,
       workingHours: workingHours ? sanitizeInput(String(workingHours)) : null,
+      description: description ? sanitizeInput(String(description)) : null,
       lat: lat ? parseFloat(lat) : null,
       lon: lon ? parseFloat(lon) : null,
     } as Omit<StoreSubmission, "id" | "createdAt" | "updatedAt">;
@@ -173,6 +175,25 @@ export default function StoreForm({ initial, onSubmit, onCancel }: Props) {
           />
           <p className="text-xs text-gray-600 mt-1">
             Format: HH:MM-HH:MM or add days (e.g., Mo-Fr 09:00-17:00)
+          </p>
+        </div>
+      </div>
+
+      {/* Store explanation */}
+      <div className="space-y-3 border-t border-gray-200 pt-4">
+        <h3 className="text-sm font-semibold text-gray-900">Store explanation (optional)</h3>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor={`${idBase}-description`}>Explain this listing</Label>
+          <textarea
+            id={`${idBase}-description`}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+            className="min-h-[120px] rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-[#0A66C2] focus:ring-2 focus:ring-[#0A66C2]/10"
+            placeholder="Add a short note about your store, services, or what makes it special."
+          />
+          <p className="text-xs text-gray-600 mt-1">
+            Keep it short — this helps shoppers understand what makes your store unique.
           </p>
         </div>
       </div>

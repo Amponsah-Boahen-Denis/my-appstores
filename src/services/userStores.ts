@@ -11,6 +11,7 @@ export type StoreSubmission = {
   email?: string | null;
   website?: string | null;
   workingHours?: string | null; // e.g., "09:00-17:00" or "Mo-Fr 09:00-17:00, Sa 10:00-16:00"
+  description?: string | null;
   lat?: number | null;
   lon?: number | null;
   createdAt: number;
@@ -47,6 +48,7 @@ export async function saveStore(input: Omit<StoreSubmission, "id" | "createdAt" 
     email: input.email ? sanitizeInput(input.email) : null,
     phone: input.phone ? sanitizeInput(input.phone) : null,
     workingHours: input.workingHours ? sanitizeInput(input.workingHours) : null,
+    description: input.description ? sanitizeInput(input.description) : null,
     lat: input.lat || null,
     lon: input.lon || null,
     createdAt: input.id ? Date.now() : now,

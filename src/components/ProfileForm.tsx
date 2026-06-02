@@ -18,9 +18,6 @@ export default function ProfileForm({ initial, onSubmit, onCancel, isLoading = f
   const [data, setData] = useState({
     name: initial.name || "",
     email: initial.email || "",
-    phone: initial.phone || "",
-    bio: initial.bio || "",
-    website: initial.website || "",
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -44,11 +41,6 @@ export default function ProfileForm({ initial, onSubmit, onCancel, isLoading = f
 
     if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
       setError("Invalid email format");
-      return;
-    }
-
-    if (data.website && !data.website.startsWith("http")) {
-      setError("Website must start with http:// or https://");
       return;
     }
 
@@ -87,43 +79,6 @@ export default function ProfileForm({ initial, onSubmit, onCancel, isLoading = f
           value={data.email}
           onChange={(e) => handleChange("email", e.target.value)}
           placeholder="your@email.com"
-          disabled={isLoading}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="profile-phone">Phone</Label>
-        <Input
-          id="profile-phone"
-          type="tel"
-          value={data.phone}
-          onChange={(e) => handleChange("phone", e.target.value)}
-          placeholder="+1 (555) 000-0000"
-          disabled={isLoading}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="profile-bio">Bio</Label>
-        <Textarea
-          id="profile-bio"
-          value={data.bio}
-          onChange={(e) => handleChange("bio", e.target.value)}
-          placeholder="Tell us about yourself or your business"
-          rows={3}
-          disabled={isLoading}
-        />
-        <p className="text-xs text-gray-600 mt-1">Max 500 characters</p>
-      </div>
-
-      <div>
-        <Label htmlFor="profile-website">Website</Label>
-        <Input
-          id="profile-website"
-          type="url"
-          value={data.website}
-          onChange={(e) => handleChange("website", e.target.value)}
-          placeholder="https://yourwebsite.com"
           disabled={isLoading}
         />
       </div>

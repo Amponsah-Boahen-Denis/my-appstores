@@ -23,7 +23,7 @@ export default function BusinessAnalytics() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <Card className="bg-[#E7F0F7] border-[#0A66C2]/20 p-4 rounded-lg">
           <p className="text-xs text-[#0A66C2] font-medium">Total Stores</p>
           <p className="text-2xl font-bold text-[#0A66C2] mt-1">{analytics.totalStores}</p>

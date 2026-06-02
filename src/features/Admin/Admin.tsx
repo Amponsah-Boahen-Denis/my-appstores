@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppUser, UserStatus } from "@/types/user";
 import { listUsers, setUserStatus, stats } from "@/services/adminUsers";
+import { totalTransactions } from "@/services/adminTransactions";
 import { getHistoryAnalytics, HistoryAnalytics } from "@/services/history";
 import { clearAllCaches, resetAllAnalytics, exportAllData, importData } from "@/services/adminSystem";
 import { getPendingStores, approveStore, rejectStore, getModerationStats, ModeratedStore } from "@/services/adminModeration";
@@ -29,11 +30,29 @@ function StatusBadge({ status }: { status: UserStatus }) {
   return <Badge variant={variant} className="uppercase tracking-wide">{label}</Badge>;
 }
 
+function CurrencyStat({ label, amountCents, currency }: { label: string; amountCents: number; currency: string }) {
+  const formatted = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency?.toUpperCase() || "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amountCents / 100);
+
+  return (
+    <Card className="rounded-[1.5rem] bg-[#E7F0F7]/50 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5">
+      <p className="text-[11px] uppercase tracking-[0.25em] text-[#0A66C2]/70">{label}</p>
+      <p className="mt-3 text-3xl font-semibold text-[#0A66C2]">{formatted}</p>
+    </Card>
+  );
+}
+
 export default function Admin() {
   const [users, setUsers] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [metrics, setMetrics] = useState<{ total: number; blocked: number; onHold: number; active: number; registeredToday: number } | null>(null);
+  const [transactionTotalCents, setTransactionTotalCents] = useState<number | null>(null);
+  const [transactionCurrency, setTransactionCurrency] = useState<string>("usd");
   const [analytics, setAnalytics] = useState<HistoryAnalytics | null>(null);
   const [pendingStores, setPendingStores] = useState<ModeratedStore[]>([]);
   const [moderationStats, setModerationStats] = useState<{ pending: number; approved: number; rejected: number; total: number } | null>(null);
@@ -54,6 +73,16 @@ export default function Admin() {
       setAnalytics(a);
       setPendingStores(pending);
       setModerationStats(modStats);
+
+      try {
+        const tx = await totalTransactions();
+        setTransactionTotalCents(tx.totalAmount);
+        setTransactionCurrency(tx.currency || "usd");
+      } catch (transactionError) {
+        console.warn("Failed to load transaction total", transactionError);
+        setTransactionTotalCents(0);
+        setTransactionCurrency("usd");
+      }
     } catch {
       setError("Failed to load admin data");
     } finally {
@@ -99,12 +128,12 @@ export default function Admin() {
       )}
 
       <section className="rounded-[1.5rem] bg-white border border-[#0A66C2]/10 p-6 shadow-sm">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           <Stat label="Total users" value={metrics?.total ?? 0} />
           <Stat label="Active" value={metrics?.active ?? 0} />
           <Stat label="Blocked" value={metrics?.blocked ?? 0} />
           <Stat label="On hold" value={metrics?.onHold ?? 0} />
-          <Stat label="Registered today" value={metrics?.registeredToday ?? 0} />
+          <CurrencyStat label="Total transactions" amountCents={transactionTotalCents ?? 0} currency={transactionCurrency} />
         </div>
       </section>
 
@@ -150,7 +179,7 @@ export default function Admin() {
           <h2 className="text-lg font-semibold text-[#0A66C2]">Store Moderation</h2>
           <span className="text-sm text-[#0A66C2]/70">Review queue</span>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           <Stat label="Pending" value={moderationStats?.pending ?? 0} />
           <Stat label="Approved" value={moderationStats?.approved ?? 0} />
           <Stat label="Rejected" value={moderationStats?.rejected ?? 0} />

@@ -62,7 +62,7 @@ export default function SearchForm({ defaultProduct = "", defaultCountry = "", d
 
   return (
     <form
-      className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_minmax(0,1fr)]"
+      className="grid grid-cols-1 gap-6 xl:grid-cols-[280px_minmax(0,1fr)]"
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
@@ -134,10 +134,10 @@ export default function SearchForm({ defaultProduct = "", defaultCountry = "", d
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-            <Button type="button" onClick={detectUserLocation} disabled={isDetectingLocation} variant="secondary" size="lg" className="min-w-[180px]">
+            <Button type="button" onClick={detectUserLocation} disabled={isDetectingLocation} variant="secondary" size="lg" className="w-full sm:w-auto min-w-0">
               {isDetectingLocation ? "Detecting..." : "📍 Use My Address"}
             </Button>
-            <Button type="submit" variant="default" size="lg" className="min-w-[160px]">
+            <Button type="submit" variant="default" size="lg" className="w-full sm:w-auto min-w-0">
               🔍 Search Stores
             </Button>
           </div>

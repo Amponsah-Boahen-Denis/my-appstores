@@ -196,7 +196,7 @@ export default function History() {
                   params.set("product", item.product);
                   if (item.country) params.set("country", item.country);
                   if (item.location) params.set("location", item.location);
-                  router.push(`/Search?${params.toString()}`);
+                  router.push(`/search?${params.toString()}`);
                 }}
               />
             ))}

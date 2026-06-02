@@ -12,16 +12,21 @@ export default function Navbar() {
   const routes = getNavbarRoutes();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const isRouteActive = (path: string) =>
+    path === "/"
+      ? pathname === "/"
+      : pathname === path || pathname.startsWith(`${path}/`);
+
   const closeMenu = () => setMobileOpen(false);
 
   return (
     <nav className="w-full border-b border-[#d4e5f6] bg-white/95 backdrop-blur sticky top-0 z-50 shadow-sm">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight text-[#0a66c2]">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-[#0a66c2] text-sm font-semibold text-white">
-            MB
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-[#0a66c2] to-[#1b4f9b] text-sm font-semibold text-white shadow-sm">
+            DS
           </span>
-          my-best
+          Dstores
         </Link>
 
         <Button
@@ -37,14 +42,15 @@ export default function Navbar() {
 
         <ul className="hidden items-center gap-2 text-sm font-medium md:flex">
           {routes.map((route) => {
-            const isActive = pathname === route.path;
+            const isActive = isRouteActive(route.path);
             return (
               <li key={route.path}>
                 <ButtonLink
                   href={route.path}
-                  variant={isActive ? "default" : "ghost"}
+                  variant="ghost"
                   size="sm"
-                  className={isActive ? "border border-[#0a66c2] shadow-sm" : "text-[#0a66c2] hover:bg-[#e7f3ff] hover:text-[#003c7b]"}
+                  aria-current={isActive ? "page" : undefined}
+                  className={isActive ? "bg-[#0a66c2] !text-white shadow-sm hover:bg-[#004a86]" : "text-[#0a66c2] hover:bg-[#e7f3ff] hover:text-[#003c7b]"}
                 >
                   {route.name}
                 </ButtonLink>
@@ -56,17 +62,19 @@ export default function Navbar() {
         <div className="hidden items-center gap-2 md:flex">
           <ButtonLink
             href="/auth/login"
-            variant={pathname === "/auth/login" ? "secondary" : "ghost"}
+            variant="ghost"
             size="sm"
-            className={pathname === "/auth/login" ? "border border-[#0a66c2] text-[#0a66c2]" : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"}
+            aria-current={pathname === "/auth/login" ? "page" : undefined}
+            className={pathname === "/auth/login" ? "bg-[#0a66c2] !text-white hover:bg-[#004a86]" : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"}
           >
             Login
           </ButtonLink>
           <ButtonLink
             href="/auth/signup"
-            variant={pathname === "/auth/signup" ? "default" : "default"}
+            variant="ghost"
             size="sm"
-            className={pathname === "/auth/signup" ? "bg-[#0a66c2] text-white hover:bg-[#004a86]" : "bg-[#0a66c2] text-white hover:bg-[#004a86]"}
+            aria-current={pathname === "/auth/signup" ? "page" : undefined}
+            className={pathname === "/auth/signup" ? "bg-[#0a66c2] !text-white hover:bg-[#004a86]" : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"}
           >
             Sign up
           </ButtonLink>
@@ -77,15 +85,16 @@ export default function Navbar() {
         <div className="md:hidden border-t border-[#d4e5f6] bg-white shadow-lg">
           <ul className="space-y-1 p-3">
             {routes.map((route) => {
-              const isActive = pathname === route.path;
+              const isActive = isRouteActive(route.path);
               return (
                 <li key={route.path}>
                   <ButtonLink
                     href={route.path}
                     onClick={closeMenu}
-                    variant={isActive ? "default" : "ghost"}
+                    variant="ghost"
                     size="sm"
-                    className={isActive ? "block rounded-lg border border-[#0a66c2] bg-[#e8f3ff] text-[#0a66c2] px-4 py-2 text-sm font-semibold" : "block rounded-lg px-4 py-2 text-sm font-semibold text-[#0a66c2] hover:bg-[#e7f3ff]"}
+                    aria-current={isActive ? "page" : undefined}
+                    className={isActive ? "block rounded-lg bg-[#0a66c2] !text-white px-4 py-2 text-sm font-semibold hover:bg-[#004a86]" : "block rounded-lg px-4 py-2 text-sm font-semibold text-[#0a66c2] hover:bg-[#e7f3ff]"}
                   >
                     {route.name}
                   </ButtonLink>
@@ -96,9 +105,10 @@ export default function Navbar() {
               <ButtonLink
                 href="/auth/login"
                 onClick={closeMenu}
-                variant={pathname === "/auth/login" ? "secondary" : "ghost"}
+                variant={pathname === "/auth/login" ? "default" : "ghost"}
                 size="sm"
-                className={pathname === "/auth/login" ? "block rounded-lg border border-[#0a66c2] bg-[#e8f3ff] text-[#0a66c2] px-4 py-2 text-sm font-semibold" : "block rounded-lg border border-[#0a66c2] px-4 py-2 text-sm font-semibold text-[#0a66c2] hover:bg-[#e7f3ff]"}
+                aria-current={pathname === "/auth/login" ? "page" : undefined}
+                className={pathname === "/auth/login" ? "block rounded-lg bg-[#0a66c2] !text-white px-4 py-2 text-sm font-semibold hover:bg-[#004a86]" : "block rounded-lg border border-[#0a66c2] px-4 py-2 text-sm font-semibold text-[#0a66c2] hover:bg-[#e7f3ff]"}
               >
                 Login
               </ButtonLink>
@@ -107,9 +117,10 @@ export default function Navbar() {
               <ButtonLink
                 href="/auth/signup"
                 onClick={closeMenu}
-                variant="default"
+                variant={pathname === "/auth/signup" ? "default" : "ghost"}
                 size="sm"
-                className="block rounded-lg bg-[#0a66c2] px-4 py-2 text-sm font-semibold text-white hover:bg-[#004a86]"
+                aria-current={pathname === "/auth/signup" ? "page" : undefined}
+                className={pathname === "/auth/signup" ? "block rounded-lg bg-[#0a66c2] !text-white px-4 py-2 text-sm font-semibold hover:bg-[#004a86]" : "block rounded-lg border border-[#0a66c2] px-4 py-2 text-sm font-semibold text-[#0a66c2] hover:bg-[#e7f3ff]"}
               >
                 Sign up
               </ButtonLink>

@@ -104,7 +104,7 @@ export default function Login() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="grid gap-10 overflow-hidden rounded-[28px] border border-[#dce6f3] bg-white shadow-[0_24px_80px_rgba(15,23,42,0.1)] lg:grid-cols-[1.1fr_0.9fr]">
         <div className="bg-gradient-to-b from-[#eaf4ff] to-white p-8 sm:p-12">
           <div className="max-w-xl space-y-6">
@@ -112,7 +112,7 @@ export default function Login() {
               Secure access • Fast login
             </span>
             <h1 className="text-4xl font-bold tracking-tight text-[#0a66c2] sm:text-5xl">
-              Welcome back to My-Best
+              Welcome back to Dstores
             </h1>
             <p className="text-base leading-7 text-slate-600">
               Sign in to access your search history, manage store listings, and discover the best local products faster with smart relevancy.

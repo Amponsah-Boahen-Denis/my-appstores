@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "my-best • Local store search",
-  description: "Find nearby stores by product with smart relevance and business details.",
+  title: "Dstores • Local store search",
+  description: "Dstores helps you find nearby stores by product with smart relevance and business details.",
 };
 
 export default function RootLayout({

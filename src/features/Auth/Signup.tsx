@@ -107,7 +107,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="grid gap-10 overflow-hidden rounded-[28px] border border-[#dce6f3] bg-white shadow-[0_24px_80px_rgba(15,23,42,0.1)] lg:grid-cols-[1.1fr_0.9fr]">
         <div className="bg-gradient-to-b from-[#eef5ff] to-white p-8 sm:p-12">
           <div className="max-w-xl space-y-6">

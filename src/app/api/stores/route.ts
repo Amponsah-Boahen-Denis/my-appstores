@@ -12,6 +12,7 @@ type StoreRecord = {
   email?: string | null;
   phone?: string | null;
   workingHours?: string | null;
+  description?: string | null;
   lat?: number | null;
   lon?: number | null;
   createdAt: number;

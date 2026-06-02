@@ -82,7 +82,7 @@ export default function SearchFilters({ results, onFiltersChange, onClearFilters
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-4">
         <Badge className="justify-center">Total {stats.total}</Badge>
         <Badge variant="success" className="justify-center">Website {stats.withWebsite}</Badge>
         <Badge variant="default" className="justify-center">Email {stats.withEmail}</Badge>
@@ -93,7 +93,7 @@ export default function SearchFilters({ results, onFiltersChange, onClearFilters
         <div className="space-y-4 pt-4 border-t border-slate-200">
           <div>
             <h4 className="font-medium mb-2">Contact Information</h4>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div>
                 <p className="text-sm font-medium mb-2">Website</p>
                 <div className="space-y-1">
@@ -188,7 +188,7 @@ export default function SearchFilters({ results, onFiltersChange, onClearFilters
 
           <div>
             <h4 className="font-medium mb-2">Sort By</h4>
-            <div className="grid gap-3 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
               <label className="flex items-center gap-2">
                 <Radio
                   name="sortBy"
