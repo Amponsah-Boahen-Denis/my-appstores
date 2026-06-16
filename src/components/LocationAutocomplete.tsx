@@ -11,9 +11,10 @@ type Props = {
   onChange: (value: string) => void;
   placeholder?: string;
   id?: string;
+  showLabel?: boolean;
 };
 
-export default function LocationAutocomplete({ value, onChange, placeholder = "City or address", id }: Props) {
+export default function LocationAutocomplete({ value, onChange, placeholder = "City or address", id, showLabel = true }: Props) {
   const [query, setQuery] = useState(value);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -50,7 +51,7 @@ export default function LocationAutocomplete({ value, onChange, placeholder = "C
 
   return (
     <div className="flex flex-col gap-1 relative">
-      <Label htmlFor={id}>City / Address</Label>
+      {showLabel && <Label htmlFor={id}>City / Address</Label>}
       <Input
         id={id}
         aria-label="City or address"

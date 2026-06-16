@@ -23,7 +23,7 @@ const DUMMY_STORE: StoreSubmission = {
   logo: null,
   phone: "+1 555 123 4567",
   email: "hello@downtowncoffee.com",
-  website: "https://dstores.example.com",
+  website: "https://ampden.example.com",
   workingHours: "Mon-Fri 08:00-18:00",
   lat: 40.7128,
   lon: -74.0060,
@@ -116,7 +116,7 @@ export default function Profile() {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8 space-y-8">
-      <section className="mx-auto max-w-3xl">
+      <section className="mx-auto max-w-5xl">
         <Card className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="grid gap-5 lg:grid-cols-[1.4fr_0.95fr]">
             <div className="space-y-5 rounded-3xl bg-slate-50 p-5">

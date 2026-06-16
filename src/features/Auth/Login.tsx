@@ -112,7 +112,7 @@ export default function Login() {
               Secure access • Fast login
             </span>
             <h1 className="text-4xl font-bold tracking-tight text-[#0a66c2] sm:text-5xl">
-              Welcome back to Dstores
+              Welcome back to Ampden
             </h1>
             <p className="text-base leading-7 text-slate-600">
               Sign in to access your search history, manage store listings, and discover the best local products faster with smart relevancy.

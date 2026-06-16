@@ -40,7 +40,7 @@ const COUNTRIES = [
 export default function CountryInput({ value, onChange, id, label = "Country" }: Props) {
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
+      {label && <Label htmlFor={id}>{label}</Label>}
       <Select
         id={id}
         value={value}

@@ -210,28 +210,6 @@ export default function Pricing() {
         </div>
       </div>
 
-      {/* FAQ Section */}
-      <div className="mt-16">
-        <h2 className="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="border-b border-black/10 dark:border-white/15 pb-4">
-            <h3 className="font-semibold mb-2">Can I change my plan anytime?</h3>
-            <p className="text-sm text-black/70 dark:text-white/70">Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately.</p>
-          </div>
-          <div className="border-b border-black/10 dark:border-white/15 pb-4">
-            <h3 className="font-semibold mb-2">What happens if I exceed my limits?</h3>
-            <p className="text-sm text-black/70 dark:text-white/70">You&apos;ll receive notifications when approaching limits. Consider upgrading for higher limits.</p>
-          </div>
-          <div className="border-b border-black/10 dark:border-white/15 pb-4">
-            <h3 className="font-semibold mb-2">Is there a free trial for paid plans?</h3>
-            <p className="text-sm text-black/70 dark:text-white/70">Start with our free plan to test all features. No credit card required for the free tier.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">When will payment integration be available?</h3>
-            <p className="text-sm text-black/70 dark:text-white/70">Payment processing and plan enforcement will be added in the next development phase.</p>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }

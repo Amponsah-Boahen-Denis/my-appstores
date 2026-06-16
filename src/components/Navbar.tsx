@@ -24,9 +24,9 @@ export default function Navbar() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight text-[#0a66c2]">
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-[#0a66c2] to-[#1b4f9b] text-sm font-semibold text-white shadow-sm">
-            DS
+            AD
           </span>
-          Dstores
+          Ampden
         </Link>
 
         <Button

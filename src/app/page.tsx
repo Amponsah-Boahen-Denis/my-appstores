@@ -11,13 +11,13 @@ export default function Home() {
             <div className="space-y-6">
               <Badge className="bg-[#e8f3ff] text-[#0a66c2] border-none shadow-sm">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#0a66c2] mr-2" />
-                Powered by Google Places and our verified database
+                Ampden • Local search with verified store data
               </Badge>
               <h1 className="text-4xl font-bold tracking-tight text-[#0a66c2] sm:text-5xl">
                 Discover local stores, stock, and working hours instantly
               </h1>
               <p className="text-lg text-slate-700 max-w-xl">
-                Your local search engine for product availability and shop details. Find verified stores, compare results, and keep your own places listed for everyone.
+                Ampden helps you find product availability and shop details in one place. Find verified stores, compare results, and keep your own places listed for everyone.
               </p>
               <div className="flex flex-wrap gap-3">
                 <ButtonLink href="/search" variant="default" className="px-6 py-3 text-sm font-semibold">
