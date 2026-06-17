@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default function SearchPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 md:py-14 lg:py-16">
+    <main className="min-h-screen bg-[#e8f3ff] mx-auto max-w-6xl px-4 py-10 md:py-14 lg:py-16">
       <Card className="p-4 md:p-6">
         <Suspense fallback={<div className="py-10 text-center text-slate-500">Loading search…</div>}>
           <SearchFeature />

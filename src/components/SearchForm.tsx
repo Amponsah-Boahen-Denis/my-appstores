@@ -72,7 +72,7 @@ export default function SearchForm({ defaultProduct = "", defaultCountry = "", d
       }}
       aria-label="Search stores"
     >
-      <Card className="space-y-6 p-6">
+      <Card className="space-y-6 p-6 bg-[#f7fbff]">
         <div className="space-y-3">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Find stores</p>
           <div className="space-y-2">
@@ -110,19 +110,19 @@ export default function SearchForm({ defaultProduct = "", defaultCountry = "", d
                   <HiddenInput id="location-hidden" name="location" value={location} />
                 </div>
                 <Button type="button" onClick={detectUserLocation} disabled={isDetectingLocation} variant="secondary" size="lg" className="w-full sm:w-auto">
-                  {isDetectingLocation ? "Detecting..." : "📍 Use My Address"}
+                  {isDetectingLocation ? "Detecting..." : "Use My Address"}
                 </Button>
               </div>
             </div>
           </div>
 
-          <Button type="submit" variant="default" size="lg" className="w-full">
-            🔍 Search Stores
+          <Button type="submit" variant="secondary" size="lg" className="w-full">
+            Search Stores
           </Button>
         </div>
       </Card>
 
-      <Card className="sticky top-6 p-6 flex flex-col">
+      <Card className="sticky top-6 p-6 flex flex-col bg-[#f7fbff]">
         <div className="space-y-2">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Categories</p>
           <h3 className="text-xl font-semibold text-slate-900">Refine your search</h3>

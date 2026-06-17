@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#f3f2ef] via-[#e6ecf2] to-white text-slate-900">
+    <main className="min-h-screen bg-[#e8f3ff] text-slate-900">
       <section className="mx-auto max-w-6xl px-4 py-16 lg:py-24">
         <Card className="p-8 lg:p-14">
           <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
@@ -14,17 +14,17 @@ export default function Home() {
                 Ampden • Verified stores only
               </Badge>
               <h1 className="text-4xl font-bold tracking-tight text-[#0a66c2] sm:text-5xl">
-                Get stores from my verified listings only
+                Find verified local stores and real stock availability
               </h1>
               <p className="text-lg text-slate-700 max-w-xl">
-                Ampden shows you only verified local stores and their stock details. Search by product and location with confidence and accuracy.
+                Ampden gives you instant access to verified local store listings. Search by product and location, compare results, and connect with trusted businesses.
               </p>
               <div className="flex flex-wrap gap-3">
-                <ButtonLink href="/search" variant="default" className="px-6 py-3 text-sm font-semibold">
-                  Start Searching
+                <ButtonLink href="/search" variant="secondary" className="px-6 py-3 text-sm font-semibold text-[#0a66c2] hover:text-[#004a86]">
+                  Search Verified Stores
                 </ButtonLink>
                 <ButtonLink href="/profile" variant="secondary" className="px-6 py-3 text-sm font-semibold text-[#0a66c2] hover:text-[#004a86]">
-                  Add your store
+                  Add Your Store
                 </ButtonLink>
               </div>
             </div>
