@@ -11,10 +11,10 @@ export default function Home() {
             <div className="space-y-6">
               <Badge className="bg-[#e8f3ff] text-[#0a66c2] border-none shadow-sm">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#0a66c2] mr-2" />
-                Ampden • Verified database only
+                Ampden • Verified stores only
               </Badge>
               <h1 className="text-4xl font-bold tracking-tight text-[#0a66c2] sm:text-5xl">
-                Get stores from my verified database only
+                Get stores from my verified listings only
               </h1>
               <p className="text-lg text-slate-700 max-w-xl">
                 Ampden shows you only verified local stores and their stock details. Search by product and location with confidence and accuracy.

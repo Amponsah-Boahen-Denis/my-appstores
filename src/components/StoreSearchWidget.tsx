@@ -86,9 +86,9 @@ export default function StoreSearchWidget() {
     <Card className="p-6">
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Search Our Database</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Search Verified Stores</h3>
           <p className="text-sm text-gray-600">
-            Check if your store is already in our database or find specific stores
+            Check if your store is already verified or find specific stores
           </p>
         </div>
 
@@ -191,7 +191,7 @@ export default function StoreSearchWidget() {
         {searched && results && results.length === 0 && !error && (
           <div className="rounded-md bg-[#E7F0F7] p-3 border border-[#0A66C2]/20">
             <p className="text-sm text-[#0A66C2]">
-              Your store isn&apos;t in our database yet. Consider{" "}
+              Your store isn&apos;t verified yet. Consider{" "}
               <a href="#store-form" className="font-medium underline hover:no-underline">
                 submitting it
               </a>
