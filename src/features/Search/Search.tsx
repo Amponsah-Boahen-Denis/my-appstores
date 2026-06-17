@@ -217,8 +217,8 @@ export default function Search() {
       <Card className="p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">Search</h1>
-            <p className="mt-1 text-sm text-slate-600">Find stores and refine results with filter controls.</p>
+            <h1 className="text-2xl font-semibold tracking-tight">Verified Store Search</h1>
+            <p className="mt-1 text-sm text-slate-600">Search Ampden's verified database only and refine results with filters.</p>
           </div>
           <LayoutToggle value={prefsLayout} onChange={handleLayoutChange} />
         </div>

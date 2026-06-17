@@ -77,7 +77,7 @@ export default function SearchForm({ defaultProduct = "", defaultCountry = "", d
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Find stores</p>
           <div className="space-y-2">
             <h2 className="text-3xl font-semibold tracking-tight text-slate-900">Search verified businesses</h2>
-            <p className="max-w-2xl text-sm text-slate-600">Use product, country, and location inputs to find stores from the verified database.</p>
+            <p className="max-w-2xl text-sm text-slate-600">Use product, country, and location inputs to get stores from our verified database only.</p>
           </div>
         </div>
 
