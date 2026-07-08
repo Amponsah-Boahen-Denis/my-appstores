@@ -115,15 +115,15 @@ export default function Profile() {
   };
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8 space-y-8">
-      <section className="mx-auto max-w-5xl">
-        <Card className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="grid gap-5 lg:grid-cols-[1.4fr_0.95fr]">
-            <div className="space-y-5 rounded-3xl bg-slate-50 p-5">
+    <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+      <section className="mx-auto max-w-6xl">
+        <Card className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
+          <div className="grid gap-5 lg:grid-cols-[1.4fr_0.9fr] xl:gap-6">
+            <div className="space-y-4 rounded-3xl bg-slate-50 p-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h2 className="text-xl font-semibold text-slate-900">Profile overview</h2>
-                  <p className="mt-2 text-sm text-slate-500">
+                  <p className="mt-1 text-sm text-slate-500 max-w-2xl">
                     Your account details are summarized here. Keeping these up to date helps customers trust your storefront.
                   </p>
                 </div>
@@ -132,7 +132,7 @@ export default function Profile() {
                     type="button"
                     onClick={() => setIsEditingProfile(true)}
                     variant="secondary"
-                    className="mt-2 sm:mt-0 inline-flex items-center justify-center gap-3 rounded-full px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 whitespace-nowrap"
+                    className="mt-2 sm:mt-0 inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 whitespace-nowrap"
                   >
                     Edit profile
                   </Button>
@@ -140,24 +140,22 @@ export default function Profile() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-3xl bg-white p-4 border border-slate-200 shadow-sm">
+                <div className="rounded-3xl bg-white p-4 border border-slate-200 shadow-sm text-center">
                   <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Name</p>
-                  <p className="mt-2 text-base font-semibold text-slate-900">{user.name}</p>
+                  <p className="mt-3 text-base font-semibold text-slate-900">{user.name}</p>
                 </div>
-                <div className="rounded-3xl bg-white p-4 border border-slate-200 shadow-sm">
+                <div className="rounded-3xl bg-white p-4 border border-slate-200 shadow-sm text-center">
                   <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Email</p>
-                  <p className="mt-2 text-base font-semibold text-slate-900">{user.email}</p>
+                  <p className="mt-3 text-base font-semibold text-slate-900">{user.email}</p>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm text-center">
               <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Activity summary</p>
-              <div className="mt-5">
-                <div className="rounded-2xl bg-slate-50 p-4">
-                  <p className="text-sm text-slate-500">Published stores</p>
-                  <p className="mt-2 text-3xl font-semibold text-slate-900">{isUsingDummyStore ? 0 : stores.length}</p>
-                </div>
+              <div className="mt-5 rounded-3xl bg-slate-50 p-5">
+                <p className="text-sm text-slate-500">Published stores</p>
+                <p className="mt-3 text-3xl font-semibold text-slate-900">{isUsingDummyStore ? 0 : stores.length}</p>
               </div>
             </div>
           </div>
@@ -165,8 +163,8 @@ export default function Profile() {
       </section>
 
       {isEditingProfile && (
-        <section className="mx-auto max-w-3xl">
-          <Card className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="mx-auto max-w-3xl px-0 sm:px-2 lg:px-0">
+          <Card className="rounded-3xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-slate-900 text-center">Edit Profile</h2>
               <ProfileForm
@@ -180,7 +178,7 @@ export default function Profile() {
         </section>
       )}
 
-      <section className="mx-auto max-w-5xl space-y-6">
+      <section className="mx-auto max-w-6xl space-y-6">
         <div className="space-y-3 text-center">
           <h2 className="text-xl font-semibold text-slate-900">Your stores</h2>
           {isUsingDummyStore && (
@@ -192,7 +190,7 @@ export default function Profile() {
         <StoreList items={stores} onEdit={handleEdit} onDelete={handleDelete} />
       </section>
 
-      <section className="mx-auto max-w-5xl space-y-3">
+      <section className="mx-auto max-w-6xl space-y-3">
         <div className="space-y-2 text-center">
           <h2 className="text-xl font-semibold text-slate-900">{editing ? "Edit store" : "Submit a new store"}</h2>
           <p className="text-sm text-slate-500">
@@ -208,14 +206,14 @@ export default function Profile() {
             onDismiss={() => setStoreLimitError(null)}
           />
         )}
-        <StoreForm initial={editing || undefined} onSubmit={handleSubmit} onCancel={() => setEditing(null)} />
+        <StoreForm id="store-form" initial={editing || undefined} onSubmit={handleSubmit} onCancel={() => setEditing(null)} />
       </section>
 
-      <section className="mx-auto max-w-5xl">
+      <section className="mx-auto max-w-6xl">
         <BusinessAnalytics />
       </section>
 
-      <section className="mx-auto max-w-5xl">
+      <section className="mx-auto max-w-6xl">
         <StoreSearchWidget />
       </section>
     </main>

@@ -16,7 +16,7 @@ export default function StoreList({ items, onEdit, onDelete }: Props) {
     return <p className="text-sm text-black/60 dark:text-white/60">You have not added any stores yet.</p>;
   }
   return (
-    <div className="space-y-4">
+    <div className="grid gap-4 md:grid-cols-2">
       {items.map((s) => (
         <Card key={s.id} className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">

@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-[#f3f6f9] text-slate-900`}
       >
-        <Navbar />
-        <main className="min-h-[calc(100vh-7rem)]">{children}</main>
-        <Footer />
-        <BackToTop />
+        <AuthProvider>
+          <Navbar />
+          <main className="min-h-[calc(100vh-7rem)]">{children}</main>
+          <Footer />
+          <BackToTop />
+        </AuthProvider>
       </body>
     </html>
   );

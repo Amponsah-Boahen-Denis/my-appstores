@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -63,6 +65,9 @@ export default function Login() {
     }
   }, []);
 
+  const router = useRouter();
+  const { login } = useAuth();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -71,24 +76,18 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      // TODO: Implement actual login logic
-      console.log("Login attempt:", formData);
-      
+      await login(formData);
+
       if (rememberMe) {
         window.localStorage.setItem("rememberedEmail", formData.email);
       } else {
         window.localStorage.removeItem("rememberedEmail");
       }
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For now, just show success (will be replaced with actual auth)
-      alert("Login successful! (This is a placeholder)");
-      
+
+      router.push("/profile");
     } catch (error) {
       console.error("Login error:", error);
-      setErrors({ general: "Login failed. Please try again." });
+      setErrors({ general: error instanceof Error ? error.message : "Login failed. Please try again." });
     } finally {
       setIsLoading(false);
     }

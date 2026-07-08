@@ -6,11 +6,13 @@ import { getNavbarRoutes } from "@/routes/AppRoutes";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ButtonLink } from "@/components/ui/button-link";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function Navbar() {
   const pathname = usePathname();
   const routes = getNavbarRoutes();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const isRouteActive = (path: string) =>
     path === "/"
@@ -60,24 +62,35 @@ export default function Navbar() {
         </ul>
 
         <div className="hidden items-center gap-2 md:flex">
-          <ButtonLink
-            href="/auth/login"
-            variant="ghost"
-            size="sm"
-            aria-current={pathname === "/auth/login" ? "page" : undefined}
-            className={pathname === "/auth/login" ? "bg-[#0a66c2] !text-white hover:bg-[#004a86]" : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"}
-          >
-            Login
-          </ButtonLink>
-          <ButtonLink
-            href="/auth/signup"
-            variant="ghost"
-            size="sm"
-            aria-current={pathname === "/auth/signup" ? "page" : undefined}
-            className={pathname === "/auth/signup" ? "bg-[#0a66c2] !text-white hover:bg-[#004a86]" : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"}
-          >
-            Sign up
-          </ButtonLink>
+          {user ? (
+            <>
+              <span className="text-sm text-slate-600">Hi, {user.name}</span>
+              <Button type="button" variant="secondary" size="sm" onClick={logout} className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <ButtonLink
+                href="/auth/login"
+                variant="ghost"
+                size="sm"
+                aria-current={pathname === "/auth/login" ? "page" : undefined}
+                className={pathname === "/auth/login" ? "bg-[#0a66c2] !text-white hover:bg-[#004a86]" : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"}
+              >
+                Login
+              </ButtonLink>
+              <ButtonLink
+                href="/auth/signup"
+                variant="ghost"
+                size="sm"
+                aria-current={pathname === "/auth/signup" ? "page" : undefined}
+                className={pathname === "/auth/signup" ? "bg-[#0a66c2] !text-white hover:bg-[#004a86]" : "border border-[#0a66c2] text-[#0a66c2] hover:bg-[#e7f3ff]"}
+              >
+                Sign up
+              </ButtonLink>
+            </>
+          )}
         </div>
       </div>
 

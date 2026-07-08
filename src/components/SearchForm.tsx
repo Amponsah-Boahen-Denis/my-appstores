@@ -62,7 +62,7 @@ export default function SearchForm({ defaultProduct = "", defaultCountry = "", d
 
   return (
     <form
-      className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] items-stretch"
+      className="grid gap-6 md:gap-8 lg:grid-cols-[minmax(0,1fr)_360px] items-stretch"
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
@@ -98,18 +98,18 @@ export default function SearchForm({ defaultProduct = "", defaultCountry = "", d
             />
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-[1fr_auto] items-end">
-            <div className="space-y-3">
+          <div className="grid gap-4 md:grid-cols-[1fr_auto] items-end">
+            <div>
               <CountryInput id="country" value={country} onChange={setCountry} label="" />
               <HiddenInput id="country-hidden" name="country" value={country} />
             </div>
-            <div className="space-y-3">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <div className="flex-1">
+            <div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                <div className="flex-1 min-w-0">
                   <LocationAutocomplete id="location" value={location} onChange={setLocation} showLabel={false} />
                   <HiddenInput id="location-hidden" name="location" value={location} />
                 </div>
-                <Button type="button" onClick={detectUserLocation} disabled={isDetectingLocation} variant="secondary" size="lg" className="w-full sm:w-auto">
+                <Button type="button" onClick={detectUserLocation} disabled={isDetectingLocation} variant="secondary" size="default" className="w-full sm:w-auto sm:self-end h-11">
                   {isDetectingLocation ? "Detecting..." : "Use My Address"}
                 </Button>
               </div>
@@ -122,7 +122,7 @@ export default function SearchForm({ defaultProduct = "", defaultCountry = "", d
         </div>
       </Card>
 
-      <Card className="sticky top-6 p-6 flex flex-col bg-[#f7fbff]">
+      <Card className="lg:sticky lg:top-6 p-6 flex flex-col bg-[#f7fbff]">
         <div className="space-y-2">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Categories</p>
           <h3 className="text-xl font-semibold text-slate-900">Refine your search</h3>

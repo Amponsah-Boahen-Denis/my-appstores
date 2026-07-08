@@ -12,12 +12,13 @@ import { storeCategories } from "@/utils/storeCategories";
 import { StoreSubmission } from "@/services/userStores";
 
 type Props = {
+  id?: string;
   initial?: Partial<StoreSubmission>;
   onSubmit: (data: Omit<StoreSubmission, "id" | "createdAt" | "updatedAt">) => void;
   onCancel?: () => void;
 };
 
-export default function StoreForm({ initial, onSubmit, onCancel }: Props) {
+export default function StoreForm({ id, initial, onSubmit, onCancel }: Props) {
   const idBase = useId();
   const [name, setName] = useState(initial?.name || "");
   const [country, setCountry] = useState(initial?.country || "");
@@ -63,7 +64,7 @@ export default function StoreForm({ initial, onSubmit, onCancel }: Props) {
   };
 
   return (
-    <form className="space-y-6 bg-white rounded-lg border border-gray-200 p-6" onSubmit={handleSubmit} aria-label="Store submission form">
+    <form id={id} className="space-y-6 bg-white rounded-lg border border-gray-200 p-6" onSubmit={handleSubmit} aria-label="Store submission form">
       {error && <div role="alert" className="text-sm text-red-600 bg-red-50 p-3 rounded border border-red-200">{error}</div>}
       
       {/* Logo Upload */}

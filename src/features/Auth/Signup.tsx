@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/providers/AuthProvider";
 
 type SignupFormData = {
   name: string;
@@ -71,6 +73,9 @@ export default function Signup() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const router = useRouter();
+  const { signup } = useAuth();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -79,18 +84,16 @@ export default function Signup() {
     setIsLoading(true);
     
     try {
-      // TODO: Implement actual signup logic
-      console.log("Signup attempt:", formData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // For now, just show success (will be replaced with actual auth)
-      alert("Account created successfully! (This is a placeholder)");
-      
+      await signup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      router.push("/profile");
     } catch (error) {
       console.error("Signup error:", error);
-      setErrors({ general: "Signup failed. Please try again." });
+      setErrors({ general: error instanceof Error ? error.message : "Signup failed. Please try again." });
     } finally {
       setIsLoading(false);
     }
