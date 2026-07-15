@@ -14,28 +14,11 @@ import { updateUserPreferences } from "@/services/preferences";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-const DUMMY_STORE: StoreSubmission = {
-  id: "dummy-store",
-  name: "Downtown Coffee Shop",
-  category: ["Cafe", "Beverages"],
-  country: "USA",
-  address: "123 Main St, Springfield",
-  logo: null,
-  phone: "+1 555 123 4567",
-  email: "hello@downtowncoffee.com",
-  website: "https://ampden.example.com",
-  workingHours: "Mon-Fri 08:00-18:00",
-  lat: 40.7128,
-  lon: -74.0060,
-  createdAt: Date.now(),
-  updatedAt: Date.now(),
-};
-
 export default function Profile() {
   const { prefs, setPrefs } = usePreferences();
   const user = {
-    name: prefs.name || "User",
-    email: prefs.email || "user@example.com",
+    name: prefs.name || "No name provided",
+    email: prefs.email || "No email provided",
   };
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -43,23 +26,11 @@ export default function Profile() {
   const [stores, setStores] = useState<StoreSubmission[]>([]);
   const [editing, setEditing] = useState<StoreSubmission | null>(null);
   const [storeLimitError, setStoreLimitError] = useState<string | null>(null);
-  const [isUsingDummyStore, setIsUsingDummyStore] = useState(false);
 
   useEffect(() => {
     listStores()
-      .then((next) => {
-        if (next.length === 0) {
-          setStores([DUMMY_STORE]);
-          setIsUsingDummyStore(true);
-        } else {
-          setStores(next);
-          setIsUsingDummyStore(false);
-        }
-      })
-      .catch(() => {
-        setStores([DUMMY_STORE]);
-        setIsUsingDummyStore(true);
-      });
+      .then(setStores)
+      .catch(() => setStores([]));
   }, []);
 
   const handleSubmit = async (data: Omit<StoreSubmission, "id" | "createdAt" | "updatedAt">) => {
@@ -97,21 +68,13 @@ export default function Profile() {
   };
 
   const handleEdit = (item: StoreSubmission) => {
-    if (item.id === DUMMY_STORE.id) return;
     setEditing(item);
   };
 
   const handleDelete = async (id: string) => {
-    if (id === DUMMY_STORE.id) {
-      setStores([]);
-      setIsUsingDummyStore(false);
-      return;
-    }
-
     await deleteStore(id);
     const updated = await listStores();
-    setStores(updated.length === 0 ? [DUMMY_STORE] : updated);
-    setIsUsingDummyStore(updated.length === 0);
+    setStores(updated);
   };
 
   return (
@@ -155,7 +118,7 @@ export default function Profile() {
               <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Activity summary</p>
               <div className="mt-5 rounded-3xl bg-slate-50 p-5">
                 <p className="text-sm text-slate-500">Published stores</p>
-                <p className="mt-3 text-3xl font-semibold text-slate-900">{isUsingDummyStore ? 0 : stores.length}</p>
+                <p className="mt-3 text-3xl font-semibold text-slate-900">{stores.length}</p>
               </div>
             </div>
           </div>
@@ -181,9 +144,9 @@ export default function Profile() {
       <section className="mx-auto max-w-6xl space-y-6">
         <div className="space-y-3 text-center">
           <h2 className="text-xl font-semibold text-slate-900">Your stores</h2>
-          {isUsingDummyStore && (
+          {stores.length === 0 && (
             <p className="text-sm text-slate-500">
-              This is a demo store placeholder while your store list is empty. Add a store below to replace it.
+              Your store list is empty. Add a store below to get started.
             </p>
           )}
         </div>

@@ -85,4 +85,27 @@ export async function deleteStore(id: string): Promise<void> {
   }
 }
 
+export async function searchStores(query: { product: string; category?: string[]; country?: string; address?: string; limit?: number }): Promise<StoreSubmission[]> {
+  if (typeof window === "undefined") return [];
+
+  const params = new URLSearchParams();
+  params.set("product", query.product.toLowerCase().trim());
+  if (query.category?.length) params.set("category", query.category.join(",").toLowerCase().trim());
+  if (query.country) params.set("country", query.country.toLowerCase().trim());
+  if (query.address) params.set("address", query.address.toLowerCase().trim());
+  if (typeof query.limit === "number") params.set("limit", String(query.limit));
+
+  try {
+    const res = await fetch(`/api/stores/search?${params.toString()}`);
+    if (!res.ok) {
+      throw new Error(`Database search failed: ${res.status}`);
+    }
+    const data = await res.json();
+    return Array.isArray(data.results) ? (data.results as StoreSubmission[]) : [];
+  } catch (error) {
+    console.error("Failed to search stores in database:", error);
+    return [];
+  }
+}
+
 

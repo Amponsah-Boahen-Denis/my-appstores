@@ -310,8 +310,6 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 // Very basic Overpass query with optional category filters - limited to closest 20 stores
-// TEMPORARY GOOGLE PLACES TEST MODE
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export async function findNearbyStores(
   lat: number,
   lon: number,
@@ -320,17 +318,18 @@ export async function findNearbyStores(
   _categoryInfo: CategoryInfo | string[] | null = null,
   maxResults = 20,
 ): Promise<Place[]> {
-  /* eslint-enable @typescript-eslint/no-unused-vars */
-  // TEMPORARY: Replace OpenStreetMap Overpass search with Google Places API test endpoint.
-  // The original Overpass query is commented out below for reference.
-  /*
-  const overpass = "https://overpass-api.de/api/interpreter";
-  const requestedCategories = Array.isArray(categoryInfo)
-    ? categoryInfo
-    : categoryInfo
-      ? [categoryInfo]
+  const requestedCategories = Array.isArray(_categoryInfo)
+    ? _categoryInfo
+    : _categoryInfo
+      ? [_categoryInfo]
       : [];
-  const filters = requestedCategories
+
+  const escapeForRegex = (value: string) =>
+    value.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\//g, "\\/");
+
+  const productQuery = _productQuery.trim();
+  const overpass = "https://overpass-api.de/api/interpreter";
+  const categoryFilters = requestedCategories
     .flatMap((item) =>
       categoryToOverpassFilters(
         typeof item === "string"
@@ -338,18 +337,26 @@ export async function findNearbyStores(
           : item
       )
     );
-  const target = filters.length
-    ? filters.map((f) => `${f}(around:${radiusMeters},${lat},${lon});`).join("\n    ")
-    : `nwr["shop"](around:${radiusMeters},${lat},${lon});
-    nwr["amenity"~"restaurant|cafe|bank|pharmacy|hospital|school|fuel|parking|cinema|theatre|gym|dentist|veterinary"](around:${radiusMeters},${lat},${lon});
-    nwr["office"](around:${radiusMeters},${lat},${lon});
-    nwr["craft"](around:${radiusMeters},${lat},${lon});
-    nwr["tourism"~"hotel|motel|information|attraction"](around:${radiusMeters},${lat},${lon});
-    nwr["leisure"~"park|garden|spa|fitness_centre"](around:${radiusMeters},${lat},${lon});
-    nwr["industrial"](around:${radiusMeters},${lat},${lon});`;
+
+  const productFilter = productQuery
+    ? `nwr["name"~"${escapeForRegex(productQuery)}",i](around:${_radiusMeters},${lat},${lon});`
+    : "";
+
+  const target = categoryFilters.length > 0
+    ? categoryFilters.map((f) => `${f}(around:${_radiusMeters},${lat},${lon});`).join("\n    ")
+    : [
+        productFilter,
+        `nwr["shop"](around:${_radiusMeters},${lat},${lon});`,
+        `nwr["amenity"~"restaurant|cafe|bank|pharmacy|hospital|school|fuel|parking|cinema|theatre|gym|dentist|veterinary"](around:${_radiusMeters},${lat},${lon});`,
+        `nwr["office"](around:${_radiusMeters},${lat},${lon});`,
+        `nwr["craft"](around:${_radiusMeters},${lat},${lon});`,
+        `nwr["tourism"~"hotel|motel|information|attraction"](around:${_radiusMeters},${lat},${lon});`,
+        `nwr["leisure"~"park|garden|spa|fitness_centre"](around:${_radiusMeters},${lat},${lon});`,
+        `nwr["industrial"](around:${_radiusMeters},${lat},${lon});`,
+      ].filter(Boolean).join("\n    ");
 
   const query = `[
-    out:json
+    out:json;
   ];
   (
     ${target}
@@ -364,50 +371,7 @@ export async function findNearbyStores(
   if (!res.ok) throw new Error(`Places failed: ${res.status}`);
   const data = await res.json();
   const elements = Array.isArray(data?.elements) ? data.elements : [];
-  */
 
-  type GooglePlaceAddressComponent = {
-    shortText?: string;
-    longText?: string;
-    text?: string;
-  };
-
-  type GooglePlaceDetails = {
-    name?: string;
-    addressComponents?: GooglePlaceAddressComponent[];
-  };
-
-  const googlePlacesTestUrl =
-    "https://places.googleapis.com/v1/places/GyuEmsRBfy61i59si0?fields=addressComponents&key=deni11";
-
-  const res = await fetch(googlePlacesTestUrl, {
-    headers: { Accept: "application/json" },
-  });
-  if (!res.ok) throw new Error(`Google Places request failed: ${res.status}`);
-  const placeData = (await res.json()) as GooglePlaceDetails;
-
-  const addressParts = Array.isArray(placeData.addressComponents)
-    ? placeData.addressComponents.map((component) => {
-        return (
-          component.shortText || component.longText || component.text || ""
-        );
-      })
-    : [];
-
-  const address = addressParts.filter(Boolean).join(", ") || undefined;
-  const elements = [
-    {
-      id: placeData.name || "google-place-test",
-      tags: {
-        name: placeData.name || "Google Places Test",
-        "addr:full": address,
-      },
-      lat: 0,
-      lon: 0,
-    },
-  ];
-  
-  // Overpass element typings
   type OverpassTags = Record<string, string | undefined>;
   type OverpassElement = {
     id: number | string;
@@ -417,69 +381,69 @@ export async function findNearbyStores(
     tags?: OverpassTags;
   };
 
-  // Map elements to places and calculate distances
-  const places = (elements as OverpassElement[]).map((el) => {
-    const placeLat = el.lat ?? el.center?.lat ?? 0;
-    const placeLon = el.lon ?? el.center?.lon ?? 0;
-    
-    return {
-      id: String(el.id),
-      name: el.tags?.name || "Unnamed",
-      lat: placeLat,
-      lon: placeLon,
-      distance: calculateDistance(lat, lon, placeLat, placeLon),
-      address: (() => {
-        const t: OverpassTags = el.tags || {};
-        const full = t["addr:full"];
-        if (full) return full as string;
-        
-        // Try to build address from available parts
-        const parts = [
-          t["addr:housename"],
-          t["addr:housenumber"],
-          t["addr:street"],
-          t["addr:suburb"],
-          t["addr:city"] || t["addr:town"] || t["addr:village"],
-          t["addr:state"],
-          t["addr:postcode"],
-          t["addr:country"],
-        ].filter(Boolean);
-        
-        if (parts.length > 0) {
-          return parts.join(", ");
-        }
-        
-        // Fallback: try to use display_name or name with location context
-        const displayName = t["display_name"];
-        if (displayName && typeof displayName === "string") {
-          // Extract address-like part from display_name
-          const nameParts = displayName.split(',');
-          if (nameParts.length > 1) {
-            // Remove the store name (usually first part) and return the rest
-            return nameParts.slice(1).join(',').trim();
-          }
-        }
-        
-        // Last resort: use name if it looks like an address
-        const name = t["name"];
-        if (name && typeof name === 'string' && name.includes(',')) {
-          return name;
-        }
-        
-        return undefined;
-      })(),
-      website: (el.tags?.["contact:website"] || el.tags?.website || el.tags?.url) ?? null,
-      email: (el.tags?.["contact:email"] || el.tags?.email) ?? null,
-      phone: (el.tags?.["contact:phone"] || el.tags?.phone) ?? null,
-      tags: Object.keys(el.tags || {}),
-    };
-  });
+  const places = (elements as OverpassElement[])
+    .map((el) => {
+      const placeLat = el.lat ?? el.center?.lat ?? 0;
+      const placeLon = el.lon ?? el.center?.lon ?? 0;
 
-  // Sort by distance and limit to maxResults
-  return places
+      const tags = el.tags || {};
+      const displayName = tags.name || "Unnamed";
+      return {
+        id: String(el.id),
+        name: displayName,
+        lat: placeLat,
+        lon: placeLon,
+        distance: calculateDistance(lat, lon, placeLat, placeLon),
+        address: (() => {
+          const full = tags["addr:full"];
+          if (full) return full as string;
+
+          const parts = [
+            tags["addr:housename"],
+            tags["addr:housenumber"],
+            tags["addr:street"],
+            tags["addr:suburb"],
+            tags["addr:city"] || tags["addr:town"] || tags["addr:village"],
+            tags["addr:state"],
+            tags["addr:postcode"],
+            tags["addr:country"],
+          ].filter(Boolean);
+
+          if (parts.length > 0) {
+            return parts.join(", ");
+          }
+
+          const rawDisplay = tags["display_name"];
+          if (rawDisplay && typeof rawDisplay === "string") {
+            const nameParts = rawDisplay.split(",");
+            if (nameParts.length > 1) {
+              return nameParts.slice(1).join(",").trim();
+            }
+          }
+
+          if (displayName.includes(",")) {
+            return displayName;
+          }
+
+          return undefined;
+        })(),
+        website: (tags["contact:website"] || tags.website || tags.url) ?? null,
+        email: (tags["contact:email"] || tags.email) ?? null,
+        phone: (tags["contact:phone"] || tags.phone) ?? null,
+        tags: Object.keys(tags),
+      };
+    })
+    .filter((place) => {
+      if (!productQuery) return true;
+      const lowered = place.name.toLowerCase();
+      return lowered.includes(productQuery.toLowerCase()) ||
+        place.tags.some((tag) => tag.toLowerCase().includes(productQuery.toLowerCase()));
+    })
     .sort((a, b) => a.distance - b.distance)
     .slice(0, maxResults)
-    .map(({ ...place }) => place); // Remove distance from final result
+    .map(({ ...place }) => place);
+
+  return places;
 }
 
 // Convert Place to SearchResult (only essential data for display)

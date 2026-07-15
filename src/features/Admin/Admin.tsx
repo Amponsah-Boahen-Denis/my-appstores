@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppUser, UserStatus } from "@/types/user";
 import { listUsers, setUserStatus, stats } from "@/services/adminUsers";
+import { getStoreCount } from "@/services/adminStores";
 import { totalTransactions } from "@/services/adminTransactions";
 import { getHistoryAnalytics, HistoryAnalytics } from "@/services/history";
 import { clearAllCaches, resetAllAnalytics, exportAllData, importData } from "@/services/adminSystem";
@@ -51,6 +52,7 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [metrics, setMetrics] = useState<{ total: number; blocked: number; onHold: number; active: number; registeredToday: number } | null>(null);
+  const [storeCount, setStoreCount] = useState<number | null>(null);
   const [transactionTotalCents, setTransactionTotalCents] = useState<number | null>(null);
   const [transactionCurrency, setTransactionCurrency] = useState<string>("usd");
   const [analytics, setAnalytics] = useState<HistoryAnalytics | null>(null);
@@ -61,18 +63,20 @@ export default function Admin() {
     setLoading(true);
     setError(null);
     try {
-      const [u, m, a, pending, modStats] = await Promise.all([
+      const [u, m, a, pending, modStats, storeCountResult] = await Promise.all([
         listUsers(),
         stats(),
         getHistoryAnalytics(),
         getPendingStores(),
         Promise.resolve(getModerationStats()),
+        getStoreCount(),
       ]);
       setUsers(u);
       setMetrics(m);
       setAnalytics(a);
       setPendingStores(pending);
       setModerationStats(modStats);
+      setStoreCount(storeCountResult);
 
       try {
         const tx = await totalTransactions();
@@ -129,10 +133,10 @@ export default function Admin() {
 
       <section className="rounded-[1.5rem] bg-white border border-[#0A66C2]/10 p-6 shadow-sm">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <Stat label="Total stores" value={storeCount ?? 0} />
           <Stat label="Total users" value={metrics?.total ?? 0} />
           <Stat label="Active" value={metrics?.active ?? 0} />
           <Stat label="Blocked" value={metrics?.blocked ?? 0} />
-          <Stat label="On hold" value={metrics?.onHold ?? 0} />
           <CurrencyStat label="Total transactions" amountCents={transactionTotalCents ?? 0} currency={transactionCurrency} />
         </div>
       </section>

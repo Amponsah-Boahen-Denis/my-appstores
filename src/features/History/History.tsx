@@ -24,13 +24,11 @@ import {
 function StatCard({ title, value, subtitle, icon }: { title: string; value: string | number; subtitle?: string; icon: React.ReactNode }) {
   return (
     <Card className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/50 p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-      <div className="flex items-center gap-3">
-        <div className="text-2xl text-sky-600">{icon}</div>
-        <div>
-          <p className="text-sm font-medium text-slate-600">{title}</p>
-          <p className="text-3xl font-bold text-slate-900">{value}</p>
-          {subtitle && <p className="text-xs text-slate-500 mt-1">{subtitle}</p>}
-        </div>
+      <div className="flex flex-col items-center text-center">
+        <p className="text-sm font-medium text-slate-600">{title}</p>
+        <div className="mt-3 text-2xl text-sky-600">{icon}</div>
+        <p className="text-3xl font-bold text-slate-900 mt-3">{value}</p>
+        {subtitle && <p className="text-xs text-slate-500 mt-1">{subtitle}</p>}
       </div>
     </Card>
   );
@@ -231,10 +229,10 @@ export default function History() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Top Products */}
             <Card className="p-6">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                <ShoppingCart className="h-5 w-5 text-slate-700" />
-                Top Products
-              </h3>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2 text-center">Top Products</h3>
+                <div className="flex justify-center mb-4">
+                  <ShoppingCart className="h-6 w-6 text-slate-700" />
+                </div>
               <div className="space-y-3">
                 {analytics.topProducts.slice(0, 5).map((product, index) => (
                   <div key={product.name} className="flex items-center justify-between">
@@ -253,10 +251,10 @@ export default function History() {
             {/* Top Countries */}
             {analytics.topCountries.length > 0 && (
               <Card className="p-6">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                  <Globe className="h-5 w-5 text-slate-700" />
-                  Top Countries
-                </h3>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2 text-center">Top Countries</h3>
+                  <div className="flex justify-center mb-4">
+                    <Globe className="h-6 w-6 text-slate-700" />
+                  </div>
                 <div className="space-y-3">
                   {analytics.topCountries.slice(0, 5).map((country, index) => (
                     <div key={country.name} className="flex items-center justify-between">

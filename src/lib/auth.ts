@@ -2,8 +2,8 @@ import { createHash, randomBytes } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import type { AppUser } from "@/types/user";
 import { getDb } from "@/lib/mongoServer";
+import { AUTH_COOKIE_NAME } from "@/lib/constants";
 
-export const AUTH_COOKIE_NAME = "auth_token";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
 
 export function hashPassword(password: string) {

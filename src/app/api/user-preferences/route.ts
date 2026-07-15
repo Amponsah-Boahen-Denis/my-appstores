@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/mongoServer";
+import { getUserFromRequest } from "@/lib/auth";
 
 export type UserPreferences = {
   layout: "grid" | "list";
@@ -13,7 +14,12 @@ export type UserPreferences = {
 
 const defaultPrefs: UserPreferences = { layout: "grid" };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const user = await getUserFromRequest(req);
+  if (!user) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   try {
     const db = await getDb();
     const prefs = await db.collection("user_preferences").findOne({});

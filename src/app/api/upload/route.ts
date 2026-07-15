@@ -1,22 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateLogo } from "@/services/logos";
+import { getUserFromRequest } from "@/lib/auth";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 export async function POST(req: NextRequest) {
+  const user = await getUserFromRequest(req);
+  if (!user) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
-    const userId = formData.get("userId") as string;
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    if (!userId) {
-      return NextResponse.json({ error: "No user ID provided" }, { status: 400 });
-    }
+    const userId = user.id;
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
@@ -39,7 +42,7 @@ export async function POST(req: NextRequest) {
     const base64 = Buffer.from(buffer).toString("base64");
     const dataUrl = `data:${file.type};base64,${base64}`;
 
-    // Save to MongoDB (update if exists, insert if new)
+    // Save to MongoDB for the authenticated user
     const logoId = await updateLogo(userId, file.name, file.type, dataUrl);
 
     return NextResponse.json({

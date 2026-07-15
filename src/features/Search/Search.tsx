@@ -9,6 +9,7 @@ import ErrorAlert from "@/components/ErrorAlert";
 import { detectBrowserLocation } from "@/services/geolocation";
 import { findNearbyStores, toSearchResult, SearchResult, Place } from "@/services/openstreet";
 import { makeCacheKey, getSnapshot, getStoresByIds, upsertStores, upsertSnapshot, CanonicalStore } from "@/services/searchCache";
+import { searchStores } from "@/services/userStores";
 import { usePreferences } from "@/hooks/usePreferences";
 import { trackStoreAppearance, incrementSearchCount } from "@/services/businessAnalytics";
 import extractProductName from "@/utils/extractProductName";
@@ -130,9 +131,49 @@ export default function Search() {
           }
         }
         if (!coords) throw new Error("Failed to resolve location.");
-        stores = await findNearbyStores(coords.lat, coords.lon, rawProduct, 5000, requestedCategories.length > 0 ? requestedCategories : null);
+
+        const fallbackAddress = location || country;
+        const dbResults = await searchStores({
+          product: rawProduct,
+          category: requestedCategories.length > 0 ? requestedCategories : undefined,
+          country,
+          address: fallbackAddress,
+          limit: targetResults,
+        });
+
+        const filteredDbResults = dbResults.filter((store) => {
+          if (requestedCategories.length === 0) return true;
+          const storeCategories = Array.isArray(store.category)
+            ? store.category.map((c) => c.toLowerCase())
+            : [String(store.category || "")];
+          return requestedCategories.some((category) => storeCategories.includes(category.toLowerCase()));
+        });
+
+        const dbPlaces = filteredDbResults.slice(0, targetResults).map((store) => ({
+          id: store.id,
+          name: store.name,
+          lat: store.lat ?? 0,
+          lon: store.lon ?? 0,
+          address: store.address,
+          website: store.website ?? null,
+          email: store.email ?? null,
+          phone: store.phone ?? null,
+          tags: Array.isArray(store.category) ? store.category : store.category ? [store.category] : [],
+          category: Array.isArray(store.category) ? store.category.join(", ") : store.category || null,
+        }));
+
+        const existingIds = new Set(dbPlaces.map((s) => s.id));
+        let providerPlaces: Place[] = [];
+
+        if (dbPlaces.length < targetResults) {
+          providerPlaces = await findNearbyStores(coords.lat, coords.lon, rawProduct, 5000, requestedCategories.length > 0 ? requestedCategories : null);
+          providerPlaces = providerPlaces.filter((place) => !existingIds.has(place.id));
+        }
+
+        stores = [...dbPlaces, ...providerPlaces].slice(0, targetResults);
 
         const ids = await upsertStores(stores, requestedCategories.length > 0 ? requestedCategories : category?.category || null);
+
         await upsertSnapshot({
           key: cacheKey,
           query: { product: rawProduct, category: requestedCategories.length > 0 ? requestedCategories : category ? [category.category] : null, country, lat: coords.lat, lon: coords.lon, radiusMeters: 5000 },

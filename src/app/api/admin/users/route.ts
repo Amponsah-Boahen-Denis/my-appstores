@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/mongoServer";
+import { getUserFromRequest } from "@/lib/auth";
 import { AppUser, UserStatus } from "@/types/user";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const user = await getUserFromRequest(req);
+  if (!user) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   try {
     const db = await getDb();
     const users = await db.collection<AppUser>("admin_users").find().sort({ updatedAt: -1 }).toArray();
@@ -14,6 +20,11 @@ export async function GET() {
 }
 
 export async function PUT(req: NextRequest) {
+  const user = await getUserFromRequest(req);
+  if (!user) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
   try {
     const body = (await req.json()) as { id?: string; status?: UserStatus };
 
