@@ -57,7 +57,6 @@ export default function StoreForm({ id, initial, onSubmit, onCancel }: Props) {
     if (!cleaned.category || cleaned.category.length === 0) return setError("At least one category is required.");
     if (!cleaned.country) return setError("Country is required.");
     if (!cleaned.address) return setError("Address is required.");
-    if (!cleaned.logo) return setError("Store logo is required.");
     if (lat && isNaN(parseFloat(lat))) return setError("Latitude must be a valid number.");
     if (lon && isNaN(parseFloat(lon))) return setError("Longitude must be a valid number.");
     onSubmit(cleaned);
@@ -72,7 +71,7 @@ export default function StoreForm({ id, initial, onSubmit, onCancel }: Props) {
         <LogoUpload 
           onUpload={setLogo} 
           currentLogo={logo} 
-          label="Store Logo (required)" 
+          label="Store Logo (optional)" 
           userId={`store_${initial?.id || 'new'}`}
         />
       </div>
