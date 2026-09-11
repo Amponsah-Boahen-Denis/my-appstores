@@ -95,7 +95,7 @@ export async function GET(req: NextRequest) {
     const formattedResults = stores.map((store: any) => ({
       id: store.id,
       name: store.name,
-      category: store.category || null,
+      category: store.category || "Other",
       address: store.address,
       phone: store.phone || null,
       email: store.email || null,

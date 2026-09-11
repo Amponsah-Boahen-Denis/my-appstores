@@ -44,6 +44,7 @@ export default function ResultsList({ items, layout }: Props) {
           )}
           <div className="flex-1">
             <h3 className="text-base font-semibold text-slate-900">{p.name}</h3>
+            <p className="mt-1 text-sm font-medium text-sky-700">{p.category}</p>
             {street ? (
               <p className="mt-1 text-sm text-slate-600">{street}</p>
             ) : null}

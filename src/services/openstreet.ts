@@ -51,6 +51,7 @@ export type Place = {
 export type SearchResult = {
   id: string;
   name: string;
+  category: string;
   address?: string; // Made optional for consistency
   phone?: string | null;
   email?: string | null;
@@ -451,6 +452,7 @@ export function toSearchResult(place: Place & { relevanceScore?: number }): Sear
   return {
     id: place.id,
     name: place.name,
+    category: place.category || "Other",
     address: place.address,
     phone: place.phone || null,
     email: place.email || null,

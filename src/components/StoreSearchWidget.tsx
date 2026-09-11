@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 type SearchResult = {
   id: string;
   name: string;
+  category: string;
   address?: string;
   phone?: string | null;
   email?: string | null;
@@ -155,6 +156,9 @@ export default function StoreSearchWidget() {
                     <h4 className="font-medium text-[#0A66C2]">
                       ✓ {store.name}
                     </h4>
+                    <p className="text-xs font-medium text-sky-700">
+                      Category: {store.category}
+                    </p>
                     {store.address && (
                       <p className="text-xs text-gray-700">
                         📍 {store.address}
