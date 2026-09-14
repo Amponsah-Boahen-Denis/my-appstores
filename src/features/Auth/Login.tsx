@@ -143,6 +143,7 @@ export default function Login() {
               </p>
             </div>
 
+            {/*
             <Button
               type="button"
               variant="secondary"
@@ -156,6 +157,7 @@ export default function Login() {
               <span>or continue with email</span>
               <span className="h-px flex-1 bg-slate-200" />
             </div>
+            */}
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {errors.general && (

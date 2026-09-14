@@ -150,6 +150,7 @@ export default function Signup() {
               </p>
             </div>
 
+            {/*
             <Button
               type="button"
               variant="secondary"
@@ -163,6 +164,7 @@ export default function Signup() {
               <span>or use your email</span>
               <span className="h-px flex-1 bg-slate-200" />
             </div>
+            */}
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {errors.general && (
